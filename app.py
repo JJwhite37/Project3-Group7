@@ -24,18 +24,29 @@ POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb"
 poolObject = flexpoolapi.miner(POOL_ID)
 
 #TOTAL REPORTED AND EFFECTIVE HASH RATE
-print(poolObject.current_hashrate())
+print('+------------------ POOL STATS ------------------+')
+print("Pool CURRENT Effective Hashrate:", poolObject.stats().current_effective_hashrate)
+print("Pool AVERAGE Effective Hashrate:", poolObject.stats().average_effective_hashrate)
+print("Pool CURRENT Reported Hashrate:", poolObject.stats().current_reported_hashrate)
+print("Pool Valid Shares:", poolObject.stats().valid_shares)
+print("Pool Stale Shares:", poolObject.stats().stale_shares)
+print("Pool Invalid Shares:", poolObject.stats().invalid_shares)
+print("Pool balance:", poolObject.balance())
+print('+------------------------------------------------+')
 
 
 
-for worker in poolObject.workers():
-    print(worker.worker_name)
 
 
+
+
+
+#INDIVIDUAL USER INFO
 def userWorkerInfo(User):
     
     for worker in poolObject.workers():
         if (worker.worker_name == User):
+            print('+----------------- WORKER STATS -----------------+')
             print("Workers CURRENT Effective Hashrate:", worker.stats().current_effective_hashrate)
             print("Workers AVERAGE Effective Hashrate:", worker.stats().average_effective_hashrate)
             print("Workers CURRENT Reported Hashrate:", worker.stats().current_reported_hashrate)
@@ -43,6 +54,7 @@ def userWorkerInfo(User):
             print("Workers Valid Shares:", worker.stats().valid_shares)
             print("Workers Stale Shares:", worker.stats().stale_shares)
             print("Workers Invalid Shares:", worker.stats().invalid_shares)
+            print('+------------------------------------------------+')
             #print("Workers Effective Hashrate: ", worker.current_hashrate()[0])
             #print("Workers Reported Hashrate: ", worker.current_hashrate()[1])
             #print("Stats:", worker.stats().valid_shares)
