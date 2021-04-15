@@ -12,11 +12,12 @@ function Login() {
   const inputRef = useRef();
   
   const Success = (res) => {
-    console.log('LogSuccess', res.profileObj);
+    console.log('Login Success', res.profileObj);
+    socket.emit('login')
   };
 
   const Failure = (res) => {
-    console.log('Login', res);
+    console.log('Login fail', res);
   };
 
   const { signIn } = useGoogleLogin({
