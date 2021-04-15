@@ -34,8 +34,16 @@ print("Pool Invalid Shares:", poolObject.stats().invalid_shares)
 print("Pool balance:", poolObject.balance())
 print('+------------------------------------------------+')
 
+poolStats = [poolObject.stats().current_effective_hashrate, # poolStats[0]
+             poolObject.stats().average_effective_hashrate, # poolStats[1]
+             poolObject.stats().current_reported_hashrate,  # poolStats[2]
+             poolObject.stats().valid_shares,               # poolStats[3]
+             poolObject.stats().stale_shares,               # poolStats[4]
+             poolObject.stats().invalid_shares,             # poolStats[5]
+             poolObject.balance()                           # poolStats[6]
+]
 
-
+print(poolStats)
 
 
 
@@ -75,7 +83,8 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
-
+    socketio.emit('connection', poolStats, broadcast=True, include_self=True)
+    
 @socketio.on('disconnect')
 def on_disconnect():
     print('User disconnected!')
