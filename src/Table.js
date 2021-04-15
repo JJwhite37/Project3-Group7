@@ -14,6 +14,7 @@ function Table(props) {
           <td>{leaderboard[i][1]}</td>
           <br />
         </tr>,
+        <br />
       );
   }
 
