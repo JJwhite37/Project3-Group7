@@ -83,17 +83,14 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
-<<<<<<< HEAD
     
     # send leaderboard
     leaderboard = getLeaderboardAsArray()
     print("Sending Leaderboard data")
     socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
 
-=======
     socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
->>>>>>> f5af012a6b636eee6548881f7d170d0c1b49c78a
 @socketio.on('disconnect')
 def on_disconnect():
     print('User disconnected!')
