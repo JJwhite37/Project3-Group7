@@ -24,18 +24,37 @@ POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb"
 poolObject = flexpoolapi.miner(POOL_ID)
 
 #TOTAL REPORTED AND EFFECTIVE HASH RATE
-print(poolObject.current_hashrate())
+print('+------------------ POOL STATS ------------------+')
+print("Pool CURRENT Effective Hashrate:", poolObject.stats().current_effective_hashrate)
+print("Pool AVERAGE Effective Hashrate:", poolObject.stats().average_effective_hashrate)
+print("Pool CURRENT Reported Hashrate:", poolObject.stats().current_reported_hashrate)
+print("Pool Valid Shares:", poolObject.stats().valid_shares)
+print("Pool Stale Shares:", poolObject.stats().stale_shares)
+print("Pool Invalid Shares:", poolObject.stats().invalid_shares)
+print("Pool balance:", poolObject.balance())
+print('+------------------------------------------------+')
+
+poolStats = [poolObject.stats().current_effective_hashrate, # poolStats[0]
+             poolObject.stats().average_effective_hashrate, # poolStats[1]
+             poolObject.stats().current_reported_hashrate,  # poolStats[2]
+             poolObject.stats().valid_shares,               # poolStats[3]
+             poolObject.stats().stale_shares,               # poolStats[4]
+             poolObject.stats().invalid_shares,             # poolStats[5]
+             poolObject.balance()                           # poolStats[6]
+]
+
+print(poolStats)
 
 
 
-for worker in poolObject.workers():
-    print(worker.worker_name)
 
 
+#INDIVIDUAL USER INFO
 def userWorkerInfo(User):
     
     for worker in poolObject.workers():
         if (worker.worker_name == User):
+            print('+----------------- WORKER STATS -----------------+')
             print("Workers CURRENT Effective Hashrate:", worker.stats().current_effective_hashrate)
             print("Workers AVERAGE Effective Hashrate:", worker.stats().average_effective_hashrate)
             print("Workers CURRENT Reported Hashrate:", worker.stats().current_reported_hashrate)
@@ -43,6 +62,7 @@ def userWorkerInfo(User):
             print("Workers Valid Shares:", worker.stats().valid_shares)
             print("Workers Stale Shares:", worker.stats().stale_shares)
             print("Workers Invalid Shares:", worker.stats().invalid_shares)
+            print('+------------------------------------------------+')
             #print("Workers Effective Hashrate: ", worker.current_hashrate()[0])
             #print("Workers Reported Hashrate: ", worker.current_hashrate()[1])
             #print("Stats:", worker.stats().valid_shares)
@@ -63,12 +83,17 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
+<<<<<<< HEAD
     
     # send leaderboard
     leaderboard = getLeaderboardAsArray()
     print("Sending Leaderboard data")
     socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
 
+=======
+    socketio.emit('connection', poolStats, broadcast=True, include_self=True)
+    
+>>>>>>> f5af012a6b636eee6548881f7d170d0c1b49c78a
 @socketio.on('disconnect')
 def on_disconnect():
     print('User disconnected!')
