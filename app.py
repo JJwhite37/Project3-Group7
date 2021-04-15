@@ -53,7 +53,7 @@ userWorkerInfo("sickist")
 
 
 ############################################################
-#                           API INFO (END)                 #
+#                     API INFO (END)                       #
 ############################################################
 @app.route('/', defaults={"filename": "index.html"})
 @app.route('/<path:filename>')
@@ -63,6 +63,11 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
+    
+    # send leaderboard
+    leaderboard = getLeaderboardAsArray()
+    print("Sending Leaderboard data")
+    socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -75,6 +80,13 @@ def on_chat():
     socketio.emit('testing', broadcast=True, include_self=True)
 
 
+def getLeaderboardAsArray():
+    leaderboard = []
+    
+    for worker in poolObject.workers():
+        leaderboard.append( [worker.worker_name, worker.stats().valid_shares] )
+    print(leaderboard)
+    return leaderboard
 
 socketio.run(
     app,

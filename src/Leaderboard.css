@@ -1,4 +1,4 @@
-LeaderHeader {
-  font-size: 30px;
+leaderboardHeader {
   font-weight: bold;
+  border: 1px solid black;
 }

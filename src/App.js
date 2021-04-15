@@ -24,7 +24,7 @@ function App() {
   return (
     <div>
     <button onClick={onClickButton}>test</button>
-    <Leaderboard socket={socket} />
+    <Leaderboard socket={socket}  />
     </div>
   );
 }

@@ -7,8 +7,7 @@ function Table(props) {
   
   const result = [];
   let i;
-  const length_leaderboard = leaderboard.length;
-  for (i = 0; i < length_leaderboard; i += 1) {
+  for (i = 0; i < leaderboard.length; i += 1) {
     result.push(
         <tr>
           <td>{leaderboard[i][0]}</td>

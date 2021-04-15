@@ -7,15 +7,27 @@ const socket = io(); // Connects to socket connection
 
 function Leaderboard(props) {
     const { socket } = props;
-    const leaderboard = [['name', 'details'],['name', 'details'],['name', 'details'],['name', 'details'],['name', 'details']]
+    
+    const [leaderboard, setLeaderboard] = useState([]);
+    
     console.log("In Leaderboard:")
+    
+    useEffect(() => {
+        socket.on('leaderboard', (data) => {
+            console.log('leaderboard event received!');
+            console.log(data);
+            
+            setLeaderboard(data);
+        });
+    }, []);
     
     console.log("In Leaderboard, leaderboard:")
     console.log(leaderboard)
 
     return (
         <div>
-            <p> Leaderboard:</p>
+            <leaderboardHeader> Leaderboard:</leaderboardHeader>
+            <br/>
             <Table leaderboard={leaderboard} />
         </div>
     );
