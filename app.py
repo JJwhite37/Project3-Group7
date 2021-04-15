@@ -32,6 +32,11 @@ def on_disconnect():
 def on_chat(): 
     print("testing works")
     socketio.emit('testing', broadcast=True, include_self=True)
+    
+@socketio.on('Login')
+def on_login(data): 
+    print(str(data))
+    socketio.emit('Login', broadcast=True, include_self=True)
 
 
 socketio.run(
