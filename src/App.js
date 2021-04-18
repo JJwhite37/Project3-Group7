@@ -48,6 +48,7 @@ function App() {
   return (
      <div>
      {isLogin === true ? (
+     //make sure that all dashboard elements go here in the conditional statement not outside
      <div>
       <Leaderboard socket={socket}  />
       <button onClick={onClickButton}>test</button>

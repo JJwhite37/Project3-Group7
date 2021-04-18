@@ -101,7 +101,8 @@ def on_disconnect():
 def on_chat(): 
     print("testing works")
     socketio.emit('testing', broadcast=True, include_self=True)
-    
+#anything that needs to be rendered on the dashboard has to go here
+#anywhere else and it might not render properly, like leaderboard data
 @socketio.on('Login')
 def on_login(data): 
     print(str(data['userName']))

@@ -37,6 +37,16 @@ function Login() {
     isSignedIn: true,
     accessType: 'offline',
   });
+  
+   function bypassLogin(){
+    console.log('bypass login');
+    const userName = inputRef.current.value;
+    //user's email
+    const userEmail = 'steve@mail.com';
+    //url of google profile image
+    const userPic = "dawddwad";
+    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic } );
+  }
 
   return (
     <div>
@@ -44,6 +54,9 @@ function Login() {
         <h1>Type in your miner username</h1>
         <input ref={inputRef} type="text" />
       </div>
+      <div>
+          <button onClick={bypassLogin}>enter your username(for testing dashboard)</button>
+        </div>
       <div>
         <button onClick={signIn} className="button">
           <img src="icons/google.svg" alt="google login" className="icon"></img>
