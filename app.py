@@ -85,11 +85,12 @@ def on_connect():
     print('User connected!')
     
     # send leaderboard
-    leaderboard = getLeaderboardAsArray()
-    print("Sending Leaderboard data")
-    socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
+    
+    #leaderboard = getLeaderboardAsArray()
+    #print("Sending Leaderboard data")
+    #socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
 
-    socketio.emit('connection', poolStats, broadcast=True, include_self=True)
+    #socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
 @socketio.on('disconnect')
 def on_disconnect():
@@ -103,8 +104,16 @@ def on_chat():
     
 @socketio.on('Login')
 def on_login(data): 
-    print(str(data))
+    print(str(data['userName']))
+    print(str(data['userEmail']))
+    print(str(data['userPic']))
     socketio.emit('Login', broadcast=True, include_self=True)
+    leaderboard = getLeaderboardAsArray()
+    print("Sending Leaderboard data")
+    socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
+
+    socketio.emit('connection', poolStats, broadcast=True, include_self=True)
+    
 
 
 def getLeaderboardAsArray():

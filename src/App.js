@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import io from 'socket.io-client';
 //imports the google log in component
 import Login from './Login.js';
+import Logout from './Logout.js';
 import Leaderboard from './Leaderboard';
 
 const socket = io(); // Connects to socket connection
@@ -48,16 +49,14 @@ function App() {
      <div>
      {isLogin === true ? (
      <div>
-      <button onClick={onClickButton}>test</button>
-      
       <Leaderboard socket={socket}  />
-      
+      <button onClick={onClickButton}>test</button>
       <div> <Pool list={myList} /> </div>
+      <Logout socket={socket}/>
       </div>
       ) : (
       <div>
-        <h1>Welcome stranger</h1>
-        <Login />
+        <Login socket={socket}/>
       </div>
       )}
     </div>
