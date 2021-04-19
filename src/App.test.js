@@ -16,19 +16,19 @@ test('changes to sign in page after clicking sign in button', () => {
   expect(signInStatus).toBeInTheDocument();
 });
 
-test('Brings user to Dashboard after signing in', () => {
-  const resultRender = render(<Signup />);
+test('changes to sign up page after clicking sign up button', () => {
+  const resultRender = render(<App />);
   
-  const LoginButton= screen.getByText('Sign in with Google');
+  const signInButton= screen.getByText('Sign up');
+  expect(signInButton).toBeInTheDocument();
+  
+  fireEvent.click(signInButton)
+  
+  expect(signInButton).not.toBeInTheDocument();
+  
+  const LoginButton= screen.getByText('enter your username(for testing dashboard)');
   expect(LoginButton).toBeInTheDocument();
   const signupText = screen.getByText('Type in your miner username');
   expect(signupText).toBeInTheDocument();
   
-  fireEvent.click(LoginButton)
-  
- // expect(LoginButton).not.toBeInTheDocument();
-  //expect(signupText).not.toBeInTheDocument();
-  
-  const DashboardText= screen.getByText('Current Miners');
-  expect(DashboardText).toBeInTheDocument();
 });
