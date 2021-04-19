@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import io from 'socket.io-client';
 import Signin from './Signin.js';
 import Signup from './Signup.js';
@@ -10,16 +10,16 @@ const socket = io(); // Connects to socket connection
 function Login() {
   const [isLog, setLog] = useState(true);
   const [isSign, setSign] = useState(true);
-  
+
   //Signup page
-   function onSignup(){
+  function onSignup() {
     console.log('Signin');
     setLog(false);
     setSign(true);
   }
-  
+
   //signin pagw
-  function onSignin(){
+  function onSignin() {
     console.log('Signup');
     setLog(false);
     setSign(false);
@@ -27,25 +27,25 @@ function Login() {
 
   return (
     <div>
-     {isLog === true ? (
-      <div>
-        <h1>Welcome</h1>
-        <h3>New here? Then sign up, othwise sign in</h3>
+      {isLog === true ? (
+        <div>
+          <h1>Welcome</h1>
+          <h3>New here? Then sign up, othwise sign in</h3>
           <button onClick={onSignin}>Sign in</button>
           <button onClick={onSignup}>Sign up</button>
-      </div>
-      ):(
-      <div>
-      {isSign === true ? (
-      <div>
-      <Signup socket={socket}/>
-      </div>
-      ):(
-      <div>
-      <Signin socket={socket}/>
-      </div>
-      )}
-      </div>
+        </div>
+      ) : (
+        <div>
+          {isSign === true ? (
+            <div>
+              <Signup socket={socket} />
+            </div>
+          ) : (
+            <div>
+              <Signin socket={socket} />
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

@@ -15,7 +15,7 @@ function Logout() {
     console.log('Failure');
   };
 
- const { signOut } = useGoogleLogout({
+  const { signOut } = useGoogleLogout({
     clientId,
     onLogoutSuccess,
     onFailure,

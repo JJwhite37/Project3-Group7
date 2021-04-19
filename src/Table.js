@@ -4,20 +4,19 @@ import './Table.css';
 
 function Table(props) {
   const { currentMiners } = props;
-  
+
   const result = [];
   let i;
   for (i = 0; i < currentMiners.length; i += 1) {
     result.push(
-        <tr>
-          <td>{currentMiners[i][0]}</td>
-          <td>{currentMiners[i][1]}</td>
-          <br />
-        </tr>,
+      <tr>
+        <td>{currentMiners[i][0]}</td>
+        <td>{currentMiners[i][1]}</td>
         <br />
-      );
+      </tr>,
+      <br />,
+    );
   }
-
 
   return <tableBody>{result}</tableBody>;
 }
