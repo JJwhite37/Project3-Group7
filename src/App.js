@@ -1,5 +1,6 @@
 import './App.css';
 import { Pool } from './Pool.js';
+import { Discord } from "./Discord.js";
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 //imports the google log in component
@@ -79,6 +80,7 @@ function App() {
             {' '}
             <Pool list={myList} />{' '}
           </div>
+          <Discord />
           <Logout socket={socket} />
         </div>
       ) : (
