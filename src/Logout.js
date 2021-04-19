@@ -15,11 +15,7 @@ function Logout() {
     console.log('Failure');
   };
 
-<<<<<<< HEAD
- const { signOut } = useGoogleLogout({
-=======
   const { signOut } = useGoogleLogout({
->>>>>>> 0c830e14213964478baaf6ff8e1cd9f84a621314
     clientId,
     onLogoutSuccess,
     onFailure,
@@ -33,8 +29,4 @@ function Logout() {
   );
 }
 
-<<<<<<< HEAD
 export default Logout;
-=======
-export default Logout;
->>>>>>> 0c830e14213964478baaf6ff8e1cd9f84a621314

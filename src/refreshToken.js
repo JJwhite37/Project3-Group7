@@ -15,8 +15,4 @@ export const refreshToken = (userInfo) => {
 
   // Setup first refresh timer
   setTimeout(refreshToken, refreshTiming);
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 0c830e14213964478baaf6ff8e1cd9f84a621314

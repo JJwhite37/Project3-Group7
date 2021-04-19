@@ -11,19 +11,8 @@ const socket = io(); // Connects to socket connection
 //var clicked = 0; Tabbed out for linting
 function App() {
   const [isLogin, setLogin] = useState(false);
-<<<<<<< HEAD
- console.log("In App.js:")
- 
- const[myList, changeList] = useState([]);
- 
- function onClickButton(){
-        console.log('Button is clicked');
-        socket.emit('testing');
-    }
- 
-=======
   console.log('In App.js:');
-
+  
   const [myList, changeList] = useState([]);
 
   function onClickButton() {
@@ -31,7 +20,6 @@ function App() {
     socket.emit('testing');
   }
 
->>>>>>> 0c830e14213964478baaf6ff8e1cd9f84a621314
   useEffect(() => {
     socket.on('testing', () => {
       console.log('testing event working');
@@ -81,21 +69,6 @@ function App() {
   }, []);
 
   return (
-<<<<<<< HEAD
-     <div>
-     {isLogin === true ? (
-     //make sure that all dashboard elements go here in the conditional statement not outside
-     <div>
-      <CurrentMiners socket={socket}  />
-      <button onClick={onClickButton}>test</button>
-      <div> <Pool list={myList} /> </div>
-      <Logout socket={socket}/>
-      </div>
-      ) : (
-      <div>
-        <Login socket={socket}/>
-      </div>
-=======
     <div>
       {isLogin === true ? (
         //make sure that all dashboard elements go here in the conditional statement not outside
@@ -112,7 +85,6 @@ function App() {
         <div>
           <Login socket={socket} />
         </div>
->>>>>>> 0c830e14213964478baaf6ff8e1cd9f84a621314
       )}
     </div>
   );
