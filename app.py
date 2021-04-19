@@ -1,10 +1,27 @@
 import os
 import flexpoolapi
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv, find_dotenv
 from flask import Flask, send_from_directory, json, session
 from flask_socketio import SocketIO
 from flask_cors import CORS
+import models
+
+load_dotenv(find_dotenv())
 
 app = Flask(__name__, static_folder='./build/static')
+
+#------------------------------------------------------
+#database info
+DBNAME = os.getenv('DATABASE_URL')
+print(str(os.getenv('DATABASE_URL')) + " this") ## test case
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = DBNAME
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+database = SQLAlchemy(app)
+#-----------------------------------------------------
+
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -84,12 +101,13 @@ def index(filename):
 def on_connect():
     print('User connected!')
     
-    # send leaderboard
-    leaderboard = getLeaderboardAsArray()
-    print("Sending Leaderboard data")
-    socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
+    # send currentMiners
+    
+    #currentMiners = getCurrentMineresAsArray()
+    #print("Sending CurrentMiners data")
+    #socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
 
-    socketio.emit('connection', poolStats, broadcast=True, include_self=True)
+    #socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
 @socketio.on('disconnect')
 def on_disconnect():
@@ -100,17 +118,34 @@ def on_disconnect():
 def on_chat(): 
     print("testing works")
     socketio.emit('testing', broadcast=True, include_self=True)
+#anything that needs to be rendered on the dashboard has to go here
+#anywhere else and it might not render properly, like leaderboard data
+@socketio.on('Login')
+def on_login(data): 
+    print(str(data['userName']))
+    print(str(data['userEmail']))
+    print(str(data['userPic']))
+    socketio.emit('Login', broadcast=True, include_self=True)
+    currentMiners = getCurrentMinersAsArray()
+    print("Sending currentMiners data")
+    socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
 
+    socketio.emit('connection', poolStats, broadcast=True, include_self=True)
+    
+@socketio.on('Logout')
+def on_logout(): 
+    socketio.emit('Logout', broadcast=True, include_self=True)
 
-def getLeaderboardAsArray():
-    leaderboard = []
+def getCurrentMinersAsArray():
+    currentMiners = []
     
     for worker in poolObject.workers():
-        leaderboard.append( [worker.worker_name, worker.stats().valid_shares] )
-    print(leaderboard)
-    return leaderboard
+        currentMiners.append( [worker.worker_name, worker.stats().valid_shares] )
+    print(currentMiners)
+    return currentMiners
 
 socketio.run(
+    database.create_all(),
     app,
     host=os.getenv('IP', '0.0.0.0'),
     port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
