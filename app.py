@@ -1,10 +1,27 @@
 import os
 import flexpoolapi
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv, find_dotenv
 from flask import Flask, send_from_directory, json, session
 from flask_socketio import SocketIO
 from flask_cors import CORS
+import models
+
+load_dotenv(find_dotenv())
 
 app = Flask(__name__, static_folder='./build/static')
+
+#------------------------------------------------------
+#database info
+DBNAME = os.getenv('DATABASE_URL')
+print(str(os.getenv('DATABASE_URL')) + " this") ## test case
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = DBNAME
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+database = SQLAlchemy(app)
+#-----------------------------------------------------
+
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -128,6 +145,7 @@ def getCurrentMinersAsArray():
     return currentMiners
 
 socketio.run(
+    database.create_all(),
     app,
     host=os.getenv('IP', '0.0.0.0'),
     port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
