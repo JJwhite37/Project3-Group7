@@ -56,7 +56,9 @@ function Signup() {
         <input ref={inputRef} type="text" />
       </div>
       <div>
-          <button onClick={bypassLogin}>enter your username(for testing dashboard)</button>
+          <button onClick={bypassLogin} className="button">
+          <span className="buttonText">enter your username(for testing dashboard)</span>
+          </button>
         </div>
       <div>
         <button onClick={signIn} className="button">
