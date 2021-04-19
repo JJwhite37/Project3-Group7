@@ -1,68 +1,52 @@
 import { useState, useRef, useEffect } from 'react';
-import { useGoogleLogin } from 'react-google-login';
 import io from 'socket.io-client';
-import { refreshToken } from './refreshToken';
+import Signin from './Signin.js';
+import Signup from './Signup.js';
 
 const socket = io(); // Connects to socket connection
 
 
-
+//page that allows user to chose to sign up or sign in
 function Login() {
-  //will read in the clientID for google login from .env file
-  const clientId = process.env.REACT_APP_LOGINID;
+  const [isLog, setLog] = useState(true);
+  const [isSign, setSign] = useState(true);
   
-  const inputRef = useRef();
+  //Signup page
+   function onSignup(){
+    console.log('Signin');
+    setLog(false);
+    setSign(true);
+  }
   
-  const onSuccess = (userInfo) => {
-    console.log('Login Success', userInfo.profileObj);
-    console.log(userInfo.profileObj['email']);
-    //user's email
-    const userEmail = userInfo.profileObj['email'];
-    //username from text input
-    const userName = inputRef.current.value;
-    //url of google profile image
-    const userPic = userInfo.profileObj['imageUrl'];
-    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic } );
-    refreshToken(userInfo);
-  };
-
-  const onFailure = (failInfo) => {
-    console.log('Login fail', failInfo);
-  };
-
- const { signIn } = useGoogleLogin({
-    onSuccess,
-    onFailure,
-    clientId,
-    isSignedIn: true,
-    accessType: 'offline',
-  });
-  
-   function bypassLogin(){
-    console.log('bypass login');
-    const userName = inputRef.current.value;
-    //user's email
-    const userEmail = 'steve@mail.com';
-    //url of google profile image
-    const userPic = "dawddwad";
-    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic } );
+  //signin pagw
+  function onSignin(){
+    console.log('Signup');
+    setLog(false);
+    setSign(false);
   }
 
   return (
     <div>
+     {isLog === true ? (
       <div>
-        <h1>Type in your miner username</h1>
-        <input ref={inputRef} type="text" />
+        <h1>Welcome</h1>
+        <h3>New here? Then sign up, othwise sign in</h3>
+          <button onClick={onSignin}>Sign in</button>
+          <button onClick={onSignup}>Sign up</button>
       </div>
+      ):(
       <div>
-          <button onClick={bypassLogin}>enter your username(for testing dashboard)</button>
-        </div>
+      {isSign === true ? (
       <div>
-        <button onClick={signIn} className="button">
-          <img src="icons/google.svg" alt="google login" className="icon"></img>
-          <span className="buttonText">Sign in with Google</span>
-        </button>
+      <Signup socket={socket}/>
       </div>
+      ):(
+      <div>
+      <Signin socket={socket}/>
+      </div>
+      )}
+      </div>
+      )}
     </div>
   );
 }
