@@ -5,7 +5,6 @@ from dotenv import load_dotenv, find_dotenv
 from flask import Flask, send_from_directory, json, session
 from flask_socketio import SocketIO
 from flask_cors import CORS
-import models
 
 load_dotenv(find_dotenv())
 
@@ -20,6 +19,10 @@ app.config[
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 database = SQLAlchemy(app)
+
+import models
+
+
 #-----------------------------------------------------
 
 
@@ -143,11 +146,11 @@ def getCurrentMinersAsArray():
         currentMiners.append( [worker.worker_name, worker.stats().valid_shares] )
     print(currentMiners)
     return currentMiners
-
-socketio.run(
-    database.create_all(),
-    app,
-    host=os.getenv('IP', '0.0.0.0'),
-    port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
-)
+if __name__ == '__main__':
+    database.create_all()
+    socketio.run(
+        app,
+        host=os.getenv('IP', '0.0.0.0'),
+        port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
+    )
  
