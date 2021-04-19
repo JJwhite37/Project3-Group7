@@ -115,7 +115,9 @@ def on_login(data):
 
     socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
-
+@socketio.on('Logout')
+def on_logout(): 
+    socketio.emit('Logout', broadcast=True, include_self=True)
 
 def getCurrentMinersAsArray():
     currentMiners = []
