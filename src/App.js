@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 //imports the google log in component
 import Login from './Login.js';
 import Logout from './Logout.js';
-import Leaderboard from './Leaderboard';
+import CurrentMiners from './currentMiners';
 
 const socket = io(); // Connects to socket connection
 var clicked = 0;
@@ -58,7 +58,7 @@ function App() {
      {isLogin === true ? (
      //make sure that all dashboard elements go here in the conditional statement not outside
      <div>
-      <Leaderboard socket={socket}  />
+      <CurrentMiners socket={socket}  />
       <button onClick={onClickButton}>test</button>
       <div> <Pool list={myList} /> </div>
       <Logout socket={socket}/>

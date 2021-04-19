@@ -84,11 +84,11 @@ def index(filename):
 def on_connect():
     print('User connected!')
     
-    # send leaderboard
+    # send currentMiners
     
-    #leaderboard = getLeaderboardAsArray()
-    #print("Sending Leaderboard data")
-    #socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
+    #currentMiners = getCurrentMineresAsArray()
+    #print("Sending CurrentMiners data")
+    #socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
 
     #socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
@@ -109,9 +109,9 @@ def on_login(data):
     print(str(data['userEmail']))
     print(str(data['userPic']))
     socketio.emit('Login', broadcast=True, include_self=True)
-    leaderboard = getLeaderboardAsArray()
-    print("Sending Leaderboard data")
-    socketio.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
+    currentMiners = getCurrentMinersAsArray()
+    print("Sending currentMiners data")
+    socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
 
     socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
@@ -119,13 +119,13 @@ def on_login(data):
 def on_logout(): 
     socketio.emit('Logout', broadcast=True, include_self=True)
 
-def getLeaderboardAsArray():
-    leaderboard = []
+def getCurrentMinersAsArray():
+    currentMiners = []
     
     for worker in poolObject.workers():
-        leaderboard.append( [worker.worker_name, worker.stats().valid_shares] )
-    print(leaderboard)
-    return leaderboard
+        currentMiners.append( [worker.worker_name, worker.stats().valid_shares] )
+    print(currentMiners)
+    return currentMiners
 
 socketio.run(
     app,
