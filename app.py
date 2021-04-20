@@ -21,7 +21,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 database = SQLAlchemy(app)
 
 import models
+database.create_all()
 
+Miner = models.get_miner_class(database)
 
 #-----------------------------------------------------
 
@@ -165,13 +167,26 @@ def remove_user_from_statuslist(email, status_list_copy):
 def getCurrentMinersAsArray():
     currentMiners = []
     
-    for worker in poolObject.workers():
-        currentMiners.append( [worker.worker_name, worker.stats().valid_shares] )
+    workers = getWorkers()
+    for worker in workers:
+        addMinerToCurrentMiners([worker.worker_name, worker.stats().valid_shares], currentMiners)
+        
     print(currentMiners)
     return currentMiners
     
+def getWorkers():
+    return poolObject.workers()
+
+def addMinerToCurrentMiners(info, currentMiners):
+    currentMiners.append(info)
+
+def add_miner_to_database(data):
+    ''' Add miner to database '''
+    miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
+    database.session.add(miner)
+    database.session.commit()
+
 if __name__ == '__main__':
-    database.create_all()
     socketio.run(
         app,
         host=os.getenv('IP', '0.0.0.0'),
