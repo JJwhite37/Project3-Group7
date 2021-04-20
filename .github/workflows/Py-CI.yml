@@ -36,7 +36,10 @@ jobs:
         run: pip install -r requirements.txt 
         
       - name: Lint files
-        run: pylint **/app.py
+        run: pylint app.py
         
-      - name: Run tests
-        run: python -m unittest
+      - name: Run Mocked tests
+        run: python /test/mocked/unit_tests.py
+        
+      - name: Run UnMocked tests
+        run: python /test/unmocked/unit_tests.py
