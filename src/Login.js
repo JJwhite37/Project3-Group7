@@ -3,8 +3,7 @@ import { useState } from 'react';
 import Signin from './Signin.js';
 import Signup from './Signup.js';
 
-import { socket } from "./App.js";
-
+import { socket } from './App.js';
 
 //page that allows user to chose to sign up or sign in
 function Login() {
