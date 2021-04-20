@@ -8,17 +8,17 @@ from flask_cors import CORS
 
 load_dotenv(find_dotenv())
 
-app = Flask(__name__, static_folder='./build/static')
+APP = Flask(__name__, static_folder='./build/static')
 
 #------------------------------------------------------
 #database info
 DBNAME = os.getenv('DATABASE_URL')
 print(str(os.getenv('DATABASE_URL')) + " this") ## test case
-app.config[
+APP.config[
     'SQLALCHEMY_DATABASE_URI'] = DBNAME
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-database = SQLAlchemy(app)
+DATABASE = SQLAlchemy(APP)
 
 import models
 
@@ -26,10 +26,10 @@ import models
 #-----------------------------------------------------
 
 
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+CORS = CORS(APP, resources={r"/*": {"origins": "*"}})
 
-socketio = SocketIO(
-    app,
+SOCKETIO = SocketIO(
+    APP,
     cors_allowed_origins="*",
     json=json,
     manage_session=False
@@ -41,39 +41,39 @@ socketio = SocketIO(
 #The Adress of the flex pool were using to get stats
 POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb"
 
-poolObject = flexpoolapi.miner(POOL_ID)
+POOLOBJECT = flexpoolapi.miner(POOL_ID)
 
 #TOTAL REPORTED AND EFFECTIVE HASH RATE
 print('+------------------ POOL STATS ------------------+')
-print("Pool CURRENT Effective Hashrate:", poolObject.stats().current_effective_hashrate)
-print("Pool AVERAGE Effective Hashrate:", poolObject.stats().average_effective_hashrate)
-print("Pool CURRENT Reported Hashrate:", poolObject.stats().current_reported_hashrate)
-print("Pool Valid Shares:", poolObject.stats().valid_shares)
-print("Pool Stale Shares:", poolObject.stats().stale_shares)
-print("Pool Invalid Shares:", poolObject.stats().invalid_shares)
-print("Pool balance:", poolObject.balance())
+print("Pool CURRENT Effective Hashrate:", POOLOBJECT.stats().current_effective_hashrate)
+print("Pool AVERAGE Effective Hashrate:", POOLOBJECT.stats().average_effective_hashrate)
+print("Pool CURRENT Reported Hashrate:", POOLOBJECT.stats().current_reported_hashrate)
+print("Pool Valid Shares:", POOLOBJECT.stats().valid_shares)
+print("Pool Stale Shares:", POOLOBJECT.stats().stale_shares)
+print("Pool Invalid Shares:", POOLOBJECT.stats().invalid_shares)
+print("Pool balance:", POOLOBJECT.balance())
 print('+------------------------------------------------+')
 
-poolStats = [poolObject.stats().current_effective_hashrate, # poolStats[0]
-             poolObject.stats().average_effective_hashrate, # poolStats[1]
-             poolObject.stats().current_reported_hashrate,  # poolStats[2]
-             poolObject.stats().valid_shares,               # poolStats[3]
-             poolObject.stats().stale_shares,               # poolStats[4]
-             poolObject.stats().invalid_shares,             # poolStats[5]
-             poolObject.balance()                           # poolStats[6]
-]
+POOLSTATS = [POOLOBJECT.stats().current_effective_hashrate, # poolStats[0]
+             POOLOBJECT.stats().average_effective_hashrate, # poolStats[1]
+             POOLOBJECT.stats().current_reported_hashrate,  # poolStats[2]
+             POOLOBJECT.stats().valid_shares,               # poolStats[3]
+             POOLOBJECT.stats().stale_shares,               # poolStats[4]
+             POOLOBJECT.stats().invalid_shares,             # poolStats[5]
+             POOLOBJECT.balance()                           # poolStats[6]
+            ]
 
-print(poolStats)
+print(POOLSTATS)
 
 
 
 
 
 #INDIVIDUAL USER INFO
-def userWorkerInfo(User):
-    
-    for worker in poolObject.workers():
-        if (worker.worker_name == User):
+def user_worker_info(user):
+
+    for worker in POOLOBJECT.workers():
+        if worker.worker_name == user:
             print('+----------------- WORKER STATS -----------------+')
             print("Workers CURRENT Effective Hashrate:", worker.stats().current_effective_hashrate)
             print("Workers AVERAGE Effective Hashrate:", worker.stats().average_effective_hashrate)
@@ -88,69 +88,68 @@ def userWorkerInfo(User):
             #print("Stats:", worker.stats().valid_shares)
             #print("Daily Stats:", worker.daily_average_stats())
             #print("Chart:", worker.chart()[0])
-            
-userWorkerInfo("sickist")
+
+user_worker_info("sickist")
 
 
 ############################################################
 #                     API INFO (END)                       #
 ############################################################
-@app.route('/', defaults={"filename": "index.html"})
-@app.route('/<path:filename>')
+@APP.route('/', defaults={"filename": "index.html"})
+@APP.route('/<path:filename>')
 def index(filename):
     return send_from_directory('./build', filename)
 
-@socketio.on('connect')
+@SOCKETIO.on('connect')
 def on_connect():
     print('User connected!')
-    
+
     # send currentMiners
-    
+
     #currentMiners = getCurrentMineresAsArray()
     #print("Sending CurrentMiners data")
     #socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
 
     #socketio.emit('connection', poolStats, broadcast=True, include_self=True)
-    
-@socketio.on('disconnect')
+
+@SOCKETIO.on('disconnect')
 def on_disconnect():
     print('User disconnected!')
 
 
-@socketio.on('testing')
-def on_chat(): 
+@SOCKETIO.on('testing')
+def on_chat():
     print("testing works")
-    socketio.emit('testing', broadcast=True, include_self=True)
+    SOCKETIO.emit('testing', broadcast=True, include_self=True)
 #anything that needs to be rendered on the dashboard has to go here
 #anywhere else and it might not render properly, like leaderboard data
-@socketio.on('Login')
-def on_login(data): 
+@SOCKETIO.on('Login')
+def on_login(data):
     print(str(data['userName']))
     print(str(data['userEmail']))
     print(str(data['userPic']))
-    socketio.emit('Login', broadcast=True, include_self=True)
-    currentMiners = getCurrentMinersAsArray()
+    SOCKETIO.emit('Login', broadcast=True, include_self=True)
+    current_miners = get_current_miners_as_array()
     print("Sending currentMiners data")
-    socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
+    SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
 
-    socketio.emit('connection', poolStats, broadcast=True, include_self=True)
-    
-@socketio.on('Logout')
-def on_logout(): 
-    socketio.emit('Logout', broadcast=True, include_self=True)
+    SOCKETIO.emit('connection', POOLSTATS, broadcast=True, include_self=True)
 
-def getCurrentMinersAsArray():
-    currentMiners = []
-    
-    for worker in poolObject.workers():
-        currentMiners.append( [worker.worker_name, worker.stats().valid_shares] )
-    print(currentMiners)
-    return currentMiners
+@SOCKETIO.on('Logout')
+def on_logout():
+    SOCKETIO.emit('Logout', broadcast=True, include_self=True)
+
+def get_current_miners_as_array():
+    current_miners = []
+
+    for worker in POOLOBJECT.workers():
+        current_miners.append([worker.worker_name, worker.stats().valid_shares])
+    print(current_miners)
+    return current_miners
 if __name__ == '__main__':
-    database.create_all()
-    socketio.run(
-        app,
+    DATABASE.create_all()
+    SOCKETIO.run(
+        APP,
         host=os.getenv('IP', '0.0.0.0'),
         port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
     )
- 
