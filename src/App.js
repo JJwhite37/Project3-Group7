@@ -8,7 +8,7 @@ import Login from './Login.js';
 import Logout from './Logout.js';
 import CurrentMiners from './currentMiners';
 
-const socket = io(); // Connects to socket connection
+export const socket = io(); // Connects to socket connection
 //var clicked = 0; Tabbed out for linting
 function App() {
   const [isLogin, setLogin] = useState(false);
