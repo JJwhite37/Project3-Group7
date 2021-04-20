@@ -21,7 +21,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 database = SQLAlchemy(app)
 
 import models
+database.create_all()
 
+Miner = models.get_miner_class(database)
 
 #-----------------------------------------------------
 
@@ -100,6 +102,10 @@ userWorkerInfo("sickist")
 def index(filename):
     return send_from_directory('./build', filename)
 
+
+statusList = []
+email = []
+
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
@@ -125,10 +131,19 @@ def on_chat():
 #anywhere else and it might not render properly, like leaderboard data
 @socketio.on('Login')
 def on_login(data): 
+    global statusList
+    global email
+    email = data['userEmail']
+    
+    print("Status List before append:", str(statusList))
+    statusList = add_user_to_statuslist(email, statusList)
+    print("Status List after append:", str(statusList))
+    
     print(str(data['userName']))
     print(str(data['userEmail']))
     print(str(data['userPic']))
     socketio.emit('Login', broadcast=True, include_self=True)
+    
     currentMiners = getCurrentMinersAsArray()
     print("Sending currentMiners data")
     socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
@@ -136,18 +151,46 @@ def on_login(data):
     socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
 @socketio.on('Logout')
-def on_logout(): 
+def on_logout():
+    global statusList
+    global email
+    
+    statusList = remove_user_from_statuslist(email, statusList)
     socketio.emit('Logout', broadcast=True, include_self=True)
+
+def add_user_to_statuslist(email, status_list_copy):
+    ''' adds username to logged in statusList '''
+    status_list_copy.append(email)
+    return status_list_copy
+
+def remove_user_from_statuslist(email, status_list_copy):
+    ''' Remove user from statusList'''
+    status_list_copy.remove(email)
+    return status_list_copy
 
 def getCurrentMinersAsArray():
     currentMiners = []
     
-    for worker in poolObject.workers():
-        currentMiners.append( [worker.worker_name, worker.stats().valid_shares] )
+    workers = getWorkers()
+    for worker in workers:
+        addMinerToCurrentMiners([worker.worker_name, worker.stats().valid_shares], currentMiners)
+        
     print(currentMiners)
     return currentMiners
+    
+def getWorkers():
+    return poolObject.workers()
+
+def addMinerToCurrentMiners(info, currentMiners):
+    currentMiners.append(info)
+
+def add_miner_to_database(data):
+    ''' Add miner to database '''
+    miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
+    database.session.add(miner)
+    database.session.commit()
+
 if __name__ == '__main__':
-    database.create_all()
     socketio.run(
         app,
         host=os.getenv('IP', '0.0.0.0'),
