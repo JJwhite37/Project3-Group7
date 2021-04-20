@@ -1,8 +1,7 @@
 import React from 'react';
 import { useGoogleLogout } from 'react-google-login';
 import io from 'socket.io-client';
-
-const socket = io(); // Connects to socket connection
+import { socket } from "./App.js";
 
 function Logout() {
   const clientId = process.env.REACT_APP_LOGINID;

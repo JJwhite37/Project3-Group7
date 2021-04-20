@@ -2,8 +2,7 @@
 import { useGoogleLogin } from 'react-google-login';
 import io from 'socket.io-client';
 import { refreshToken } from './refreshToken';
-
-const socket = io(); // Connects to socket connection
+import { socket } from "./App.js";
 
 function Signin() {
   //will read in the clientID for google login from .env file
