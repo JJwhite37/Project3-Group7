@@ -81,24 +81,26 @@ function App() {
             </div>
           </tr>
           <tbody>
-          <div>
-            <tr>
-              <td>
-                <div>
-                  LeaderBoard Location (Powered BY DB)
-                  <button class="lookcoolbut" onClick={onClickButton}>test</button>
-                </div>
-              </td>
-              <td class="currminers">
-                <CurrentMiners socket={socket} />
-              </td>
-              <td>
-                <Discord />
-              </td>
-            </tr>
-            <tr>
-              <Logout socket={socket} />
-            </tr>
+            <div>
+              <tr>
+                <td>
+                  <div>
+                    LeaderBoard Location (Powered BY DB)
+                    <button class="lookcoolbut" onClick={onClickButton}>
+                      test
+                    </button>
+                  </div>
+                </td>
+                <td class="currminers">
+                  <CurrentMiners socket={socket} />
+                </td>
+                <td>
+                  <Discord />
+                </td>
+              </tr>
+              <tr>
+                <Logout socket={socket} />
+              </tr>
             </div>
           </tbody>
         </table>
