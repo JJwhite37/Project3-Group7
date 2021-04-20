@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import Signin from './Signin.js';
 import Signup from './Signup.js';
 
-const socket = io(); // Connects to socket connection
+import { socket } from "./App.js";
 
 
 //page that allows user to chose to sign up or sign in

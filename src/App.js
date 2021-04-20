@@ -1,5 +1,6 @@
 import './App.css';
 import { Pool } from './Pool.js';
+import { Discord } from "./Discord.js";
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 //imports the google log in component
@@ -7,7 +8,7 @@ import Login from './Login.js';
 import Logout from './Logout.js';
 import CurrentMiners from './currentMiners';
 
-const socket = io(); // Connects to socket connection
+export const socket = io(); // Connects to socket connection
 //var clicked = 0; Tabbed out for linting
 function App() {
   const [isLogin, setLogin] = useState(false);
@@ -79,6 +80,7 @@ function App() {
             {' '}
             <Pool list={myList} />{' '}
           </div>
+          <Discord />
           <Logout socket={socket} />
         </div>
       ) : (
