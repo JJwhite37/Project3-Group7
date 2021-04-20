@@ -103,8 +103,8 @@ def index(filename):
     return send_from_directory('./build', filename)
 
 
-statusList = []
-email = []
+STATUSLIST = []
+EMAIL = []
 
 @SOCKETIO.on('connect')
 def on_connect():
@@ -130,32 +130,32 @@ def on_chat():
 #anything that needs to be rendered on the dashboard has to go here
 #anywhere else and it might not render properly, like leaderboard data
 @SOCKETIO.on('Login')
-def on_login(data): 
-    global statusList
-    global email
-    email = data['userEmail']
-    
-    print("Status List before append:", str(statusList))
-    statusList = add_user_to_statuslist(email, statusList)
-    print("Status List after append:", str(statusList))
-    
+def on_login(data):
+    global STATUSLIST
+    global EMAIL
+    EMAIL = data['userEmail']
+
+    print("Status List before append:", str(STATUSLIST))
+    STATUSLIST = add_user_to_statuslist(EMAIL, STATUSLIST)
+    print("Status List after append:", str(STATUSLIST))
+
     print(str(data['userName']))
     print(str(data['userEmail']))
     print(str(data['userPic']))
     SOCKETIO.emit('Login', broadcast=True, include_self=True)
-    
-    currentMiners = getCurrentMinersAsArray()
+
+    current_miners = get_current_miners_as_array()
     print("Sending currentMiners data")
-    SOCKETIO.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
+    SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
 
     SOCKETIO.emit('connection', POOLSTATS, broadcast=True, include_self=True)
-    
+
 @SOCKETIO.on('Logout')
 def on_logout():
-    global statusList
-    global email
-    
-    statusList = remove_user_from_statuslist(email, statusList)
+    global STATUSLIST
+    global EMAIL
+
+    STATUSLIST = remove_user_from_statuslist(EMAIL, STATUSLIST)
     SOCKETIO.emit('Logout', broadcast=True, include_self=True)
 
 def add_user_to_statuslist(email, status_list_copy):
@@ -168,21 +168,21 @@ def remove_user_from_statuslist(email, status_list_copy):
     status_list_copy.remove(email)
     return status_list_copy
 
-def getCurrentMinersAsArray():
-    currentMiners = []
-    
-    workers = getWorkers()
+def get_current_miners_as_array():
+    current_miners = []
+
+    workers = get_workers()
     for worker in workers:
-        addMinerToCurrentMiners([worker.worker_name, worker.stats().valid_shares], currentMiners)
-        
-    print(currentMiners)
-    return currentMiners
-    
-def getWorkers():
+        add_miner_to_current_miners([worker.worker_name, worker.stats().valid_shares], current_miners)
+
+    print(current_miners)
+    return current_miners
+
+def get_workers():
     return POOLOBJECT.workers()
 
-def addMinerToCurrentMiners(info, currentMiners):
-    currentMiners.append(info)
+def add_miner_to_current_miners(info, current_miners):
+    current_miners.append(info)
 
 def add_miner_to_database(data):
     ''' Add miner to database '''
