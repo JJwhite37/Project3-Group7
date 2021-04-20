@@ -129,7 +129,11 @@ def on_chat():
 #anywhere else and it might not render properly, like leaderboard data
 @socketio.on('Login')
 def on_login(data): 
-    statusList.append(data['userName'])
+    global statusList
+    
+    print("Status List before append:", str(statusList))
+    statusList = add_user_to_statuslist(data['userEmail'], statusList)
+    print("Status List after append:", str(statusList))
     
     print(str(data['userName']))
     print(str(data['userEmail']))
@@ -143,8 +147,20 @@ def on_login(data):
     socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
 @socketio.on('Logout')
-def on_logout(): 
+def on_logout(email):
+    global statusList
+    statusList = remove_user_from_statuslist(email, statusList)
     socketio.emit('Logout', broadcast=True, include_self=True)
+
+def add_user_to_statuslist(email, status_list_copy):
+    ''' adds username to logged in statusList '''
+    status_list_copy.append(email)
+    return status_list_copy
+
+def remove_user_from_statuslist(email, status_list_copy):
+    ''' Remove user from statusList'''
+    status_list_copy.remove(email)
+    return status_list_copy
 
 def getCurrentMinersAsArray():
     currentMiners = []
