@@ -100,6 +100,10 @@ userWorkerInfo("sickist")
 def index(filename):
     return send_from_directory('./build', filename)
 
+
+statusList = []
+
+
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
@@ -125,10 +129,13 @@ def on_chat():
 #anywhere else and it might not render properly, like leaderboard data
 @socketio.on('Login')
 def on_login(data): 
+    statusList.append(data['userName'])
+    
     print(str(data['userName']))
     print(str(data['userEmail']))
     print(str(data['userPic']))
     socketio.emit('Login', broadcast=True, include_self=True)
+    
     currentMiners = getCurrentMinersAsArray()
     print("Sending currentMiners data")
     socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
@@ -146,6 +153,7 @@ def getCurrentMinersAsArray():
         currentMiners.append( [worker.worker_name, worker.stats().valid_shares] )
     print(currentMiners)
     return currentMiners
+    
 if __name__ == '__main__':
     database.create_all()
     socketio.run(
