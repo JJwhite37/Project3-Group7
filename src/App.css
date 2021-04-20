@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  background-color: grey;
+  padding-left: 5%;
+  border-radius: 80px;
+  border-style: dotted dashed solid double;
+
 }
 
 .App-logo {
@@ -35,4 +40,56 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.tophead {
+  letter-spacing:0.1em;
+	text-align:center;
+	margin: 40px auto;
+	text-transform: lowercase;
+	line-height: 145%;
+	font-size: 14pt;
+	font-variant: small-caps;
+  border: dashed;
+  border-radius: 15px;
+  border-style: dotted
+}
+.currminers{
+  vertical-align: text-top;
+  text-align: center;
+
+  
+}
+.dashboard{
+  background-color: #7289DA;
+  color:#FFFFFF;
+  border: dotted;
+  vertical-align: middle;
+}
+.dashboard .button {
+  border-style: dotted dashed solid double;
+  border-radius: 5px;
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #99AAB5;
+  padding: 10px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  animation: shake 50s infinite linear;
+}
+.lookcoolbut {
+    border-style: dotted dashed solid double;
+  border-radius: 5px;
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #99AAB5;
+  padding: 10px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  animation: shake 50s infinite linear;
+  
 }

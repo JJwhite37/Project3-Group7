@@ -1,6 +1,6 @@
 import './App.css';
 import { Pool } from './Pool.js';
-import { Discord } from "./Discord.js";
+import { Discord } from './Discord.js';
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 //imports the google log in component
@@ -13,7 +13,7 @@ export const socket = io(); // Connects to socket connection
 function App() {
   const [isLogin, setLogin] = useState(false);
   console.log('In App.js:');
-  
+
   const [myList, changeList] = useState([]);
 
   function onClickButton() {
@@ -52,7 +52,7 @@ function App() {
       setLogin(false);
     });
   }, []);
-  
+
   //recive emit from server after client logs in
   useEffect(() => {
     socket.on('Login', () => {
@@ -60,9 +60,9 @@ function App() {
       setLogin(true);
     });
   }, []);
-  
+
   //recive emit from server after client logs out
-   useEffect(() => {
+  useEffect(() => {
     socket.on('Logout', () => {
       console.log('Logout success');
       setLogin(false);
@@ -73,16 +73,35 @@ function App() {
     <div>
       {isLogin === true ? (
         //make sure that all dashboard elements go here in the conditional statement not outside
-        <div>
-          <CurrentMiners socket={socket} />
-          <button onClick={onClickButton}>test</button>
+        <table class="dashboard">
+          <tr>
+            <div class="tophead">
+              {' '}
+              <Pool list={myList} />{' '}
+            </div>
+          </tr>
+          <tbody>
           <div>
-            {' '}
-            <Pool list={myList} />{' '}
-          </div>
-          <Discord />
-          <Logout socket={socket} />
-        </div>
+            <tr>
+              <td>
+                <div>
+                  LeaderBoard Location (Powered BY DB)
+                  <button class="lookcoolbut" onClick={onClickButton}>test</button>
+                </div>
+              </td>
+              <td class="currminers">
+                <CurrentMiners socket={socket} />
+              </td>
+              <td>
+                <Discord />
+              </td>
+            </tr>
+            <tr>
+              <Logout socket={socket} />
+            </tr>
+            </div>
+          </tbody>
+        </table>
       ) : (
         <div>
           <Login socket={socket} />
