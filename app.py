@@ -104,7 +104,7 @@ def index(filename):
 
 
 statusList = []
-
+email = []
 
 @socketio.on('connect')
 def on_connect():
@@ -132,9 +132,11 @@ def on_chat():
 @socketio.on('Login')
 def on_login(data): 
     global statusList
+    global email
+    email = data['userEmail']
     
     print("Status List before append:", str(statusList))
-    statusList = add_user_to_statuslist(data['userEmail'], statusList)
+    statusList = add_user_to_statuslist(email, statusList)
     print("Status List after append:", str(statusList))
     
     print(str(data['userName']))
@@ -149,8 +151,10 @@ def on_login(data):
     socketio.emit('connection', poolStats, broadcast=True, include_self=True)
     
 @socketio.on('Logout')
-def on_logout(email):
+def on_logout():
     global statusList
+    global email
+    
     statusList = remove_user_from_statuslist(email, statusList)
     socketio.emit('Logout', broadcast=True, include_self=True)
 

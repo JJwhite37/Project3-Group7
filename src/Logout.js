@@ -8,7 +8,7 @@ function Logout() {
   const clientId = process.env.REACT_APP_LOGINID;
   const onLogoutSuccess = (userInfo) => {
     console.log('Logged out');
-    socket.emit('Logout', userInfo);
+    socket.emit('Logout');
   };
 
   const onFailure = () => {
