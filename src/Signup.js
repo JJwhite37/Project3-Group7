@@ -20,6 +20,8 @@ function Signup() {
     const userEmail = userInfo.profileObj['email'];
     //url of google profile image
     const userPic = userInfo.profileObj['imageUrl'];
+    //tells server if signing in or signing up
+    var loginFlag = 0;
     socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic, loginFlag: loginFlag });
     refreshToken(userInfo);
   };
