@@ -16,7 +16,9 @@ function Signin() {
     const userName = 'default';
     //url of google profile image
     const userPic = userInfo.profileObj['imageUrl'];
-    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic });
+    //tells server if signing in or signing up
+    const loginFlag = 1;
+    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic, loginFlag: loginFlag });
     refreshToken(userInfo);
   };
 
