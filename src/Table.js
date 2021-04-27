@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Table.css';
 import { useState, useEffect } from 'react';
+import { UserInfo } from './UserInfo';
 
 function Table(props) {
   const { currentMiners } = props;
@@ -18,7 +19,7 @@ function Table(props) {
         <td>{currentMiners[i][1]}</td>
         {isShown && (
         <div>
-          testing
+          <UserInfo/>
         </div>
         )}
         <br />
