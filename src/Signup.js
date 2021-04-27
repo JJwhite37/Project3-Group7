@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useGoogleLogin } from 'react-google-login';
 //import io from 'socket.io-client';
 import { refreshToken } from './refreshToken';
-
+import './Signup.css';
 import { socket } from './App.js';
 
 function Signup() {
@@ -55,7 +55,6 @@ function registerUser() {
         </div>
         <div>
           <button onClick={signIn} className="button">
-            <img src="icons/google.svg" alt="google login" className="icon"></img>
             <span className="buttonText">Sign up with Google</span>
           </button>
         </div>
@@ -63,7 +62,7 @@ function registerUser() {
       ):(
       <div>
       <h1>Enter a username for your account</h1>
-        <input ref={inputRef} type="text" />
+        <input ref={inputRef} type="text" className="textBox"/>
         <button onClick={registerUser} className="button">
           <span className="buttonText">register username</span>
         </button>
