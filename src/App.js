@@ -70,7 +70,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className = "App">
       {isLogin === true ? (
         //make sure that all dashboard elements go here in the conditional statement not outside
         <table class="dashboard">
