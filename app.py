@@ -142,6 +142,7 @@ def on_login(data):
     print(str(data['userName']))
     print(str(data['userEmail']))
     print(str(data['userPic']))
+    print(str(data['loginFlag']))
     SOCKETIO.emit('Login', broadcast=True, include_self=True)
 
     current_miners = get_current_miners_as_array()

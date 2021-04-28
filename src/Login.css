@@ -1,0 +1,26 @@
+h1 {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+
+}
+
+h3{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.button {
+    display: block;
+    margin: 7px auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1px;
+    width: 100px;
+}
+
+.buttondiv {
+    margin: auto;
+    border-style: solid;
+    width: 100px;
+}
