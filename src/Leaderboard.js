@@ -8,7 +8,7 @@ function Leaderboard(props){
     const [leaderboard, setLeaderboard] = useState([['test', 'testName', 17]])
     
     useEffect(() => {
-        socket.on('Leaderboard', (data) => {
+        socket.on('leaderboard', (data) => {
             console.log('Leaderboard event received!');
             console.log(data)
             

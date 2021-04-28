@@ -130,7 +130,7 @@ def checkEmailInDatabase(email, worker_name):
 
 def populateLeaderboardBasedOnAPI():
     print()
-    workers = get_workers()
+    workers = POOLOBJECT.workers()
     miners = []
     for worker in workers:
         # check if new worker appeared
@@ -149,7 +149,7 @@ def populateLeaderboardBasedOnAPI():
             DATABASE.session.commit()
     
 def getLeaderboardAsArray():
-    leaderboard = Miner.query.order_by(Miner.email).all()
+    leaderboard = Miner.query.order_by(Miner.valid_shares.desc()).all()
     
     array = []
     for miner in leaderboard:
@@ -173,6 +173,7 @@ print("DATABASE after deleting:\n",query)
 
 
 #check Leaderboard
+# populateLeaderboardBasedOnAPI()
 
 ############################################################
 #                     LEADERBOARD (END)                    #
