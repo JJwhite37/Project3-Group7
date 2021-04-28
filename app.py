@@ -46,15 +46,15 @@ POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb"
 POOLOBJECT = flexpoolapi.miner(POOL_ID)
 
 #TOTAL REPORTED AND EFFECTIVE HASH RATE
-print('+------------------ POOL STATS ------------------+')
-print("Pool CURRENT Effective Hashrate:", POOLOBJECT.stats().current_effective_hashrate)
-print("Pool AVERAGE Effective Hashrate:", POOLOBJECT.stats().average_effective_hashrate)
-print("Pool CURRENT Reported Hashrate:", POOLOBJECT.stats().current_reported_hashrate)
-print("Pool Valid Shares:", POOLOBJECT.stats().valid_shares)
-print("Pool Stale Shares:", POOLOBJECT.stats().stale_shares)
-print("Pool Invalid Shares:", POOLOBJECT.stats().invalid_shares)
-print("Pool balance:", POOLOBJECT.balance())
-print('+------------------------------------------------+')
+# print('+------------------ POOL STATS ------------------+')
+# print("Pool CURRENT Effective Hashrate:", POOLOBJECT.stats().current_effective_hashrate)
+# print("Pool AVERAGE Effective Hashrate:", POOLOBJECT.stats().average_effective_hashrate)
+# print("Pool CURRENT Reported Hashrate:", POOLOBJECT.stats().current_reported_hashrate)
+# print("Pool Valid Shares:", POOLOBJECT.stats().valid_shares)
+# print("Pool Stale Shares:", POOLOBJECT.stats().stale_shares)
+# print("Pool Invalid Shares:", POOLOBJECT.stats().invalid_shares)
+# print("Pool balance:", POOLOBJECT.balance())
+# print('+------------------------------------------------+')
 
 POOLSTATS = [POOLOBJECT.stats().current_effective_hashrate, # poolStats[0]
              POOLOBJECT.stats().average_effective_hashrate, # poolStats[1]
@@ -65,11 +65,7 @@ POOLSTATS = [POOLOBJECT.stats().current_effective_hashrate, # poolStats[0]
              POOLOBJECT.balance()                           # poolStats[6]
             ]
 
-print(POOLSTATS)
-
-
-
-
+#print(POOLSTATS)
 
 #INDIVIDUAL USER INFO
 def user_worker_info(user):
@@ -91,12 +87,70 @@ def user_worker_info(user):
             #print("Daily Stats:", worker.daily_average_stats())
             #print("Chart:", worker.chart()[0])
 
-user_worker_info("sickist")
+#user_worker_info("sickist")
 
 
 ############################################################
 #                     API INFO (END)                       #
 ############################################################
+
+
+
+
+
+
+############################################################
+#                     LEADERBOARD (start)                  #
+############################################################
+
+# METHODS
+def add_miner_to_current_miners(info, current_miners):
+    current_miners.append(info)
+
+def add_miner_to_database(data):
+    ''' Add miner to database '''
+    miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
+    DATABASE.session.add(miner)
+    DATABASE.session.commit()
+
+def delete_miner_to_database(data):
+    ''' Delete miner from database '''
+    miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
+    DATABASE.session.delete(miner)
+    DATABASE.session.commit()
+
+def checkEmailInDatabase(email):
+    print(Miner.query.filter_by(email=email).first())
+    
+    if Miner.query.filter_by(email=email).first() is None:
+        print(email, "not in database")
+        return True
+    else:
+        print(email, "not in database")
+        return False
+
+query = Miner.query.order_by(Miner.email).all()
+print("DATABASE:\n",query)
+
+# create Miner
+standard_miner = Miner(email="tester@testing.om", worker_name="daBaby", valid_shares=10)
+add_miner_to_database(standard_miner)
+
+query = Miner.query.order_by(Miner.email).all()
+print("DATABASE after adding:\n",query)
+delete_miner_to_database(standard_miner)
+
+query = Miner.query.order_by(Miner.email).all()
+print("DATABASE after deleting:\n",query)
+
+
+#check Leaderboard
+
+############################################################
+#                     LEADERBOARD (END)                    #
+############################################################
+
+
 @APP.route('/', defaults={"filename": "index.html"})
 @APP.route('/<path:filename>')
 def index(filename):
@@ -104,44 +158,33 @@ def index(filename):
 
 
 STATUSLIST = []
-EMAIL = []
 
 @SOCKETIO.on('connect')
 def on_connect():
     print('User connected!')
 
-    # send currentMiners
-
-    #currentMiners = getCurrentMineresAsArray()
-    #print("Sending CurrentMiners data")
-    #socketio.emit('currentMiners', currentMiners, broadcast=True, include_self=True)
-
-    #socketio.emit('connection', poolStats, broadcast=True, include_self=True)
-
 @SOCKETIO.on('disconnect')
 def on_disconnect():
     print('User disconnected!')
-
 
 @SOCKETIO.on('testing')
 def on_chat():
     print("testing works")
     SOCKETIO.emit('testing', broadcast=True, include_self=True)
+
 #anything that needs to be rendered on the dashboard has to go here
 #anywhere else and it might not render properly, like leaderboard data
 @SOCKETIO.on('Login')
 def on_login(data):
+    print(data)
+    
     global STATUSLIST
-    global EMAIL
+    
     EMAIL = data['userEmail']
-
-    print("Status List before append:", str(STATUSLIST))
+    print(EMAIL, "login")
     STATUSLIST = add_user_to_statuslist(EMAIL, STATUSLIST)
-    print("Status List after append:", str(STATUSLIST))
 
-    print(str(data['userName']))
-    print(str(data['userEmail']))
-    print(str(data['userPic']))
+ 
     SOCKETIO.emit('Login', broadcast=True, include_self=True)
 
     current_miners = get_current_miners_as_array()
@@ -153,7 +196,7 @@ def on_login(data):
 @SOCKETIO.on('Logout')
 def on_logout():
     global STATUSLIST
-    global EMAIL
+    EMAIL = ''
 
     STATUSLIST = remove_user_from_statuslist(EMAIL, STATUSLIST)
     SOCKETIO.emit('Logout', broadcast=True, include_self=True)
@@ -181,14 +224,6 @@ def get_current_miners_as_array():
 def get_workers():
     return POOLOBJECT.workers()
 
-def add_miner_to_current_miners(info, current_miners):
-    current_miners.append(info)
-
-def add_miner_to_database(data):
-    ''' Add miner to database '''
-    miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
-    DATABASE.session.add(miner)
-    DATABASE.session.commit()
 
 if __name__ == '__main__':
     SOCKETIO.run(
