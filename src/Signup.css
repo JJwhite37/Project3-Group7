@@ -1,0 +1,14 @@
+h1 {
+    text-align: center;
+    margin: 3px;
+}
+
+.textBox{
+    display: block;
+    margin: auto;
+}
+
+.button {
+    display: block;
+    margin: auto;
+}
