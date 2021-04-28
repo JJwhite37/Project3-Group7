@@ -161,7 +161,7 @@ query = Miner.query.order_by(Miner.email).all()
 print("DATABASE:\n",query)
 
 # create Miner
-standard_miner = Miner(email="tester@testing.om", worker_name="daBaby", valid_shares=10)
+standard_miner = Miner(email="tester2@testing.om", worker_name="daDaddy", valid_shares=34)
 add_miner_to_database(standard_miner)
 
 query = Miner.query.order_by(Miner.email).all()

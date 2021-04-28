@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import Login from './Login.js';
 import Logout from './Logout.js';
 import CurrentMiners from './currentMiners';
+import Leaderboard from './Leaderboard';
 
 export const socket = io(); // Connects to socket connection
 //var clicked = 0; Tabbed out for linting
@@ -85,7 +86,7 @@ function App() {
               <tr>
                 <td>
                   <div>
-                    LeaderBoard Location (Powered BY DB)
+                    <Leaderboard socket={socket} />
                     <button class="lookcoolbut" onClick={onClickButton}>
                       test
                     </button>
