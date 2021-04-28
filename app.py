@@ -119,16 +119,40 @@ def delete_miner_to_database(data):
     DATABASE.session.delete(miner)
     DATABASE.session.commit()
 
-def checkEmailInDatabase(email):
-    print(Miner.query.filter_by(email=email).first())
+def checkEmailInDatabase(email, worker_name):
+    print(Miner.query.filter_by(email=email, worker_name=worker_name).first())
     
-    if Miner.query.filter_by(email=email).first() is None:
-        print(email, "not in database")
-        return True
-    else:
-        print(email, "not in database")
+    if Miner.query.filter_by(email=email, worker_name=worker_name).first() is None:
+        # miner couldn't be found
+        print(email, "-", worker_name, "connection not in database")
         return False
+    else:
+        # miner was found
+        print(email, "-", worker_name, "connection not in database")
+        return True
 
+def populateLeaderboardBasedOnAPI():
+    print()
+    workers = get_workers()
+    miners = []
+    for worker in workers:
+        # check if new worker appeared
+        if Miner.query.filter_by(worker_name=worker.worker_name).first() == None:
+            # worker_name doesn't exist yet in our database, so add to database
+            miner = Miner(email="", worker_name=worker.worker_name, valid_shares=worker.stats().valid_shares)
+            add_miner_to_database(miner)
+        
+        else:
+            # miner already exists, so update valid_shares
+            miner_to_update = Miner.query.filter_by(worker_name=worker.worker_name).first()
+            
+            # add worker shares to miner shares to get updated valid_shares
+            miner_to_update.valid_shares = miner_to_update.valid_shares + worker.valid_shares
+            
+            DATABASE.session.commit()
+    
+    
+    
 query = Miner.query.order_by(Miner.email).all()
 print("DATABASE:\n",query)
 
@@ -200,6 +224,36 @@ def on_logout():
 
     STATUSLIST = remove_user_from_statuslist(EMAIL, STATUSLIST)
     SOCKETIO.emit('Logout', broadcast=True, include_self=True)
+
+@SOCKETIO.on('LoginDatabaseCheck')
+def on_login_database_check(data):
+    ''' Do stuff based on if info is already in the database'''
+    print(data)
+    result = {}
+    
+    # get miner based on worker_name
+    miner = Miner.query.filter_by(worker_name=data.worker_name).first()
+    
+    if miner.email == "": 
+        # if email is empty, that means we can update row with good email
+        miner.email = data.email
+        DATABASE.session.commit()
+        
+        # now continue login with updated database
+        result['login'] = True
+    else:
+        # see if the email and worker_name are already part of the same row
+        inDatabase = checkEmailInDatabase(data.email, data.worker_name)
+        if inDatabase == True: # means email and worker_name are correct
+            # now continue login with no change in the database
+            result['login'] = True
+        else:
+            # do not login correctly
+            result['login'] = False
+    
+    # only send to client who emitted this check
+    SOCKETIO.emit('LoginDatabaseCheck', result, broadcast=False, include_self=True)
+
 
 def add_user_to_statuslist(email, status_list_copy):
     ''' adds username to logged in statusList '''
