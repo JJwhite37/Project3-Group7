@@ -104,9 +104,6 @@ def user_worker_info(user):
 ############################################################
 
 # METHODS
-def add_miner_to_current_miners(info, current_miners):
-    current_miners.append(info)
-
 def add_miner_to_database(data):
     ''' Add miner to database '''
     miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
@@ -151,7 +148,14 @@ def populateLeaderboardBasedOnAPI():
             
             DATABASE.session.commit()
     
+def getLeaderboardAsArray():
+    leaderboard = Miner.query.order_by(Miner.email).all()
     
+    array = []
+    for miner in leaderboard:
+        array.append([miner.email, miner.worker_name, miner.valid_shares])
+    
+    return array
     
 query = Miner.query.order_by(Miner.email).all()
 print("DATABASE:\n",query)
@@ -214,7 +218,13 @@ def on_login(data):
     current_miners = get_current_miners_as_array()
     print("Sending currentMiners data")
     SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
-
+    
+    
+    leaderboard = getLeaderboardAsArray()
+    print("Sending leaderboard data")
+    SOCKETIO.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
+    
+    
     SOCKETIO.emit('connection', POOLSTATS, broadcast=True, include_self=True)
 
 @SOCKETIO.on('Logout')
@@ -265,6 +275,9 @@ def remove_user_from_statuslist(email, status_list_copy):
     status_list_copy.remove(email)
     return status_list_copy
 
+def add_miner_to_current_miners(info, current_miners):
+    current_miners.append(info)
+    
 def get_current_miners_as_array():
     current_miners = []
 
