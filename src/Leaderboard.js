@@ -19,7 +19,6 @@ function Leaderboard(props){
     console.log(leaderboard)
     return(
         <div>
-            LeaderBoard Location (Powered BY DB)
             <span>
                 <div class="leftpad"></div>
                 <div class="scrollboard">
