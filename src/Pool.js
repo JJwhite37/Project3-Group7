@@ -5,6 +5,7 @@ export function Pool(props) {
 
   return (
     <div class="pool">
+      <div>Current USD$: {props.list[7]}</div>
       <div>Balance: {props.list[6]}</div>
       <div>Current Effective Hashrate: {props.list[0]}</div>
       <div>Average Effective Hashrate: {props.list[1]}</div>
