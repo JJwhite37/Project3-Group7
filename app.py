@@ -116,9 +116,9 @@ def delete_miner_to_database(data):
     DATABASE.session.delete(miner)
     DATABASE.session.commit()
 
-def checkEmailInDatabase(email, worker_name):
+def check_email_in_database(email, worker_name):
     print(Miner.query.filter_by(email=email, worker_name=worker_name).first())
-    
+
     if Miner.query.filter_by(email=email, worker_name=worker_name).first() is None:
         # miner couldn't be found
         print(email, "-", worker_name, "connection not in database")
@@ -128,52 +128,52 @@ def checkEmailInDatabase(email, worker_name):
         print(email, "-", worker_name, "connection not in database")
         return True
 
-def populateLeaderboardBasedOnAPI():
+def populate_leaderboard_based_on_api():
     print()
     workers = POOLOBJECT.workers()
-    miners = []
+    #miners = [] unused variable
     for worker in workers:
         # check if new worker appeared
         if Miner.query.filter_by(worker_name=worker.worker_name).first() == None:
             # worker_name doesn't exist yet in our database, so add to database
             miner = Miner(email="", worker_name=worker.worker_name, valid_shares=worker.stats().valid_shares)
             add_miner_to_database(miner)
-        
+
         else:
             # miner already exists, so update valid_shares
             miner_to_update = Miner.query.filter_by(worker_name=worker.worker_name).first()
-            
+
             # add worker shares to miner shares to get updated valid_shares
             miner_to_update.valid_shares = miner_to_update.valid_shares + worker.valid_shares
-            
+
             DATABASE.session.commit()
-    
-def getLeaderboardAsArray():
+
+def get_leaderboard_as_array():
     leaderboard = Miner.query.order_by(Miner.valid_shares.desc()).all()
-    
+
     array = []
     for miner in leaderboard:
         array.append([miner.email, miner.worker_name, miner.valid_shares])
-    
+
     return array
-    
-query = Miner.query.order_by(Miner.email).all()
-print("DATABASE:\n",query)
+
+QUERY = Miner.query.order_by(Miner.email).all()
+print("DATABASE:\n", QUERY)
 
 # create Miner
-standard_miner = Miner(email="tester2@testing.om", worker_name="daDaddy", valid_shares=34)
-add_miner_to_database(standard_miner)
+STANDARD_MINER = Miner(email="tester2@testing.om", worker_name="daDaddy", valid_shares=34)
+add_miner_to_database(STANDARD_MINER)
 
-query = Miner.query.order_by(Miner.email).all()
-print("DATABASE after adding:\n",query)
-delete_miner_to_database(standard_miner)
+QUERY = Miner.query.order_by(Miner.email).all()
+print("DATABASE after adding:\n", QUERY)
+delete_miner_to_database(STANDARD_MINER)
 
-query = Miner.query.order_by(Miner.email).all()
-print("DATABASE after deleting:\n",query)
+QUERY = Miner.query.order_by(Miner.email).all()
+print("DATABASE after deleting:\n", QUERY)
 
 
 #check Leaderboard
-# populateLeaderboardBasedOnAPI()
+# populate_leaderboard_based_on_api()
 
 ############################################################
 #                     LEADERBOARD (END)                    #
@@ -206,34 +206,34 @@ def on_chat():
 @SOCKETIO.on('Login')
 def on_login(data):
     print(data)
-    
-    global STATUSLIST
-    
-    EMAIL = data['userEmail']
-    print(EMAIL, "login")
-    STATUSLIST = add_user_to_statuslist(EMAIL, STATUSLIST)
 
- 
+    global STATUSLIST
+
+    email = data['userEmail']
+    print(email, "login")
+    STATUSLIST = add_user_to_statuslist(email, STATUSLIST)
+
+
     SOCKETIO.emit('Login', broadcast=True, include_self=True)
 
     current_miners = get_current_miners_as_array()
     print("Sending currentMiners data")
     SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
-    
-    
-    leaderboard = getLeaderboardAsArray()
+
+
+    leaderboard = get_leaderboard_as_array()
     print("Sending leaderboard data")
     SOCKETIO.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
-    
-    
+
+
     SOCKETIO.emit('connection', POOLSTATS, broadcast=True, include_self=True)
 
 @SOCKETIO.on('Logout')
 def on_logout():
     global STATUSLIST
-    EMAIL = ''
+    email = ''
 
-    STATUSLIST = remove_user_from_statuslist(EMAIL, STATUSLIST)
+    STATUSLIST = remove_user_from_statuslist(email, STATUSLIST)
     SOCKETIO.emit('Logout', broadcast=True, include_self=True)
 
 @SOCKETIO.on('LoginDatabaseCheck')
@@ -241,27 +241,27 @@ def on_login_database_check(data):
     ''' Do stuff based on if info is already in the database'''
     print(data)
     result = {}
-    
+
     # get miner based on worker_name
     miner = Miner.query.filter_by(worker_name=data.worker_name).first()
-    
-    if miner.email == "": 
+
+    if miner.email == "":
         # if email is empty, that means we can update row with good email
         miner.email = data.email
         DATABASE.session.commit()
-        
+
         # now continue login with updated database
         result['login'] = True
     else:
         # see if the email and worker_name are already part of the same row
-        inDatabase = checkEmailInDatabase(data.email, data.worker_name)
-        if inDatabase == True: # means email and worker_name are correct
+        in_database = check_email_in_database(data.email, data.worker_name)
+        if in_database == True: # means email and worker_name are correct
             # now continue login with no change in the database
             result['login'] = True
         else:
             # do not login correctly
             result['login'] = False
-    
+
     # only send to client who emitted this check
     SOCKETIO.emit('LoginDatabaseCheck', result, broadcast=False, include_self=True)
 
@@ -278,7 +278,7 @@ def remove_user_from_statuslist(email, status_list_copy):
 
 def add_miner_to_current_miners(info, current_miners):
     current_miners.append(info)
-    
+
 def get_current_miners_as_array():
     current_miners = []
 
