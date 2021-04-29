@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 //import io from 'socket.io-client';
+import { useGoogleLogout } from 'react-google-login';
 import Signin from './Signin.js';
 import Signup from './Signup.js';
 import './Login.css';
@@ -9,6 +10,30 @@ import { socket } from './App.js';
 function Login() {
   const [isLog, setLog] = useState(true);
   const [isSign, setSign] = useState(true);
+
+  const clientId = process.env.REACT_APP_LOGINID;
+  const onLogoutSuccess = (userInfo) => {
+    console.log('Logged out');
+    socket.emit('Logout');
+  };
+
+  const onFailure = () => {
+    console.log('Failure');
+  };
+  
+  const { signOut } = useGoogleLogout({
+    clientId,
+    onLogoutSuccess,
+    onFailure,
+  });
+  
+  useEffect(() => {
+    socket.on('LoginFail', (data) => {
+      console.log('data');
+      setLog(true);
+      {signOut()}
+    });
+  }, []);
 
   //Signup page
   function onSignup() {

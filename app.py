@@ -125,7 +125,7 @@ def check_email_in_database(email, worker_name):
         return False
     else:
         # miner was found
-        print(email, "-", worker_name, "connection not in database")
+        print(email, "-", worker_name, "connection in database")
         return True
 
 def populate_leaderboard_based_on_api():
@@ -210,9 +210,34 @@ def on_login(data):
     global STATUSLIST
 
     email = data['userEmail']
+    username = data['userName']
     print(email, "login")
     STATUSLIST = add_user_to_statuslist(email, STATUSLIST)
-
+    # logic for sign up, loginFlag = 0 means this is from sign up
+    if data['loginFlag'] == 0:
+        print("sign up")
+        if check_email_in_database(email, username):
+            error_message = "error during signup: account already exists"
+            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
+            return 0
+        else:
+            db_user = Miner(email=email, worker_name=username, valid_shares=0)
+            DATABASE.session.add(db_user)
+            DATABASE.session.commit()
+             #currently nothing is done with the current user, not sure if someone needs this
+            current_user = {'email': email, 'username': username}
+            
+    # logic for sign in, loginFlag = 1 means this is from sign in
+    if data['loginFlag'] == 1:
+        print("sign in")
+        if Miner.query.filter_by(email=email).first() is None:
+            error_message = "error during signin: account does not exists"
+            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
+            return 0
+        else:
+            #currently nothing is done with the current user, not sure if someone needs this
+            current_user = {'email': email, 'username': username}
+            
 
     SOCKETIO.emit('Login', broadcast=True, include_self=True)
 
@@ -233,7 +258,7 @@ def on_logout():
     global STATUSLIST
     email = ''
 
-    STATUSLIST = remove_user_from_statuslist(email, STATUSLIST)
+    #STATUSLIST = remove_user_from_statuslist(email, STATUSLIST) not functional right now
     SOCKETIO.emit('Logout', broadcast=True, include_self=True)
 
 @SOCKETIO.on('LoginDatabaseCheck')
@@ -243,18 +268,18 @@ def on_login_database_check(data):
     result = {}
 
     # get miner based on worker_name
-    miner = Miner.query.filter_by(worker_name=data.worker_name).first()
+    miner = Miner.query.filter_by(worker_name=data['userName']).first()
 
     if miner.email == "":
         # if email is empty, that means we can update row with good email
-        miner.email = data.email
+        miner.email = data['userEmail']
         DATABASE.session.commit()
 
         # now continue login with updated database
         result['login'] = True
     else:
         # see if the email and worker_name are already part of the same row
-        in_database = check_email_in_database(data.email, data.worker_name)
+        in_database = check_email_in_database(data['userEmail'], data['userName'])
         if in_database == True: # means email and worker_name are correct
             # now continue login with no change in the database
             result['login'] = True
