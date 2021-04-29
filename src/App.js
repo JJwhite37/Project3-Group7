@@ -54,22 +54,6 @@ function App() {
     });
   }, []);
 
-  //recive emit from server after client logs in
-  useEffect(() => {
-    socket.on('Login', () => {
-      console.log('Login success');
-      setLogin(true);
-    });
-  }, []);
-
-  //recive emit from server after client logs out
-  useEffect(() => {
-    socket.on('Logout', () => {
-      console.log('Logout success');
-      setLogin(false);
-    });
-  }, []);
-
   return (
     <div className = "App">
       {isLogin === true ? (

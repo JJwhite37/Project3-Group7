@@ -217,7 +217,14 @@ def on_login(data):
     if data['loginFlag'] == 0:
         print("sign up")
         #check to see if a user already exists. if so throw error, send user back to main login page
-        if check_email_in_database(email, username):
+        #needs to check both the email and username in DB
+        #checking email
+        if Miner.query.filter_by(email=email).first():
+            error_message = "error during signup: account already exists"
+            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
+            return 0
+        #checking username
+        elif Miner.query.filter_by(worker_name=username).first():
             error_message = "error during signup: account already exists"
             SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
             return 0
