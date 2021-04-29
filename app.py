@@ -56,13 +56,13 @@ POOLOBJECT = flexpoolapi.miner(POOL_ID)
 # print("Pool balance:", POOLOBJECT.balance())
 # print('+------------------------------------------------+')
 
-POOLSTATS = [POOLOBJECT.stats().current_effective_hashrate, # poolStats[0]
-             POOLOBJECT.stats().average_effective_hashrate, # poolStats[1]
-             POOLOBJECT.stats().current_reported_hashrate,  # poolStats[2]
-             POOLOBJECT.stats().valid_shares,               # poolStats[3]
-             POOLOBJECT.stats().stale_shares,               # poolStats[4]
-             POOLOBJECT.stats().invalid_shares,             # poolStats[5]
-             POOLOBJECT.balance()                           # poolStats[6]
+POOLSTATS = [round((POOLOBJECT.stats().current_effective_hashrate/1000000),2),           # poolStats[0]
+             round((POOLOBJECT.stats().average_effective_hashrate/1000000),2),           # poolStats[1]
+             round((POOLOBJECT.stats().current_reported_hashrate/1000000),2),            # poolStats[2]
+             POOLOBJECT.stats().valid_shares,                                            # poolStats[3]
+             POOLOBJECT.stats().stale_shares,                                            # poolStats[4]
+             POOLOBJECT.stats().invalid_shares,                                          # poolStats[5]
+             round((POOLOBJECT.balance()/1000000000000000000),4)                         # poolStats[6]
             ]
 
 #print(POOLSTATS)
