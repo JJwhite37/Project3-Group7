@@ -1,6 +1,6 @@
 import './currentMiners.css';
 import { useState, useEffect } from 'react';
-import Table from './Table';
+import CurrentMinersRow from './CurrentMinersRow';
 
 function CurrentMiners(props) {
   const { socket } = props;
@@ -20,14 +20,30 @@ function CurrentMiners(props) {
 
   console.log('In currentMiners, currentMiners:');
   console.log(currentMiners);
-
-  return (
-    <div>
-      <currentMinersHeader> Current Miners:</currentMinersHeader>
-      <br />
-      <Table currentMiners={currentMiners} />
-    </div>
-  );
+  
+  return(
+        <div>
+            Current Miners
+            <span>
+                <div class="leftpad"></div>
+                <div class="scrollboard">
+                    <table class="scrollboard">
+                        <tr>
+                            <th> worker_name </th>
+                            <th> valid_shares </th>
+                        </tr>
+                        <tr>
+                            {currentMiners.map((item, index) => (
+                                <CurrentMinersRow name={index} array={item}/>
+                            ))}
+                        </tr>
+                    </table>
+                </div>
+            </span>
+        </div>
+    );
+  
+  
 }
 
 export default CurrentMiners;

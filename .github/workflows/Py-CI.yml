@@ -38,8 +38,5 @@ jobs:
       - name: Lint files
         run: pylint app.py
         
-      - name: Run Mocked tests
-        run: python /test/mocked/unit_tests.py
-        
-      - name: Run UnMocked tests
-        run: python /test/unmocked/unit_tests.py
+      - name: Run tests
+        run: python -m unittest

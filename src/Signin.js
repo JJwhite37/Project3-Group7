@@ -2,6 +2,7 @@ import { useGoogleLogin } from 'react-google-login';
 //import io from 'socket.io-client';
 import { refreshToken } from './refreshToken';
 import { socket } from './App.js';
+import './Signin.css';
 
 function Signin() {
   //will read in the clientID for google login from .env file
@@ -16,7 +17,9 @@ function Signin() {
     const userName = 'default';
     //url of google profile image
     const userPic = userInfo.profileObj['imageUrl'];
-    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic });
+    //tells server if signing in or signing up
+    const loginFlag = 1;
+    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic, loginFlag: loginFlag });
     refreshToken(userInfo);
   };
 
@@ -39,7 +42,6 @@ function Signin() {
       </div>
       <div>
         <button onClick={signIn} className="button">
-          <img src="icons/google.svg" alt="google login" className="icon"></img>
           <span className="buttonText">Sign in with Google</span>
         </button>
       </div>

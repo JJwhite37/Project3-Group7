@@ -1,11 +1,13 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useGoogleLogin } from 'react-google-login';
 //import io from 'socket.io-client';
 import { refreshToken } from './refreshToken';
-
+import './Signup.css';
 import { socket } from './App.js';
 
 function Signup() {
+  const [isUserScreen, setUserScreen] = useState(false);
+  const [userName, setUserName] = useState(null);
   //will read in the clientID for google login from .env file
   const clientId = process.env.REACT_APP_LOGINID;
 
@@ -16,11 +18,11 @@ function Signup() {
     console.log(userInfo.profileObj['email']);
     //user's email
     const userEmail = userInfo.profileObj['email'];
-    //username from text input
-    const userName = inputRef.current.value;
     //url of google profile image
     const userPic = userInfo.profileObj['imageUrl'];
-    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic });
+    //tells server if signing in or signing up
+    var loginFlag = 0;
+    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic, loginFlag: loginFlag });
     refreshToken(userInfo);
   };
 
@@ -36,32 +38,36 @@ function Signup() {
     accessType: 'offline',
   });
 
-  //for testing purposes
-  function bypassLogin() {
-    console.log('bypass login');
-    const userName = inputRef.current.value;
-    //user's email
-    const userEmail = 'steve@mail.com';
-    //url of google profile image
-    const userPic = 'dawddwad';
-    socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic });
-  }
+function registerUser() {
+    console.log('register username');
+    //username from text input
+    const name = inputRef.current.value;
+    setUserName(name);
+    setUserScreen(true);
+  };
 
   return (
     <div>
+      {isUserScreen === true ? (
       <div>
-        <h1>Type in your miner username</h1>
-        <input ref={inputRef} type="text" />
+        <div>
+          <h1>Use your google account to sign up</h1>
+        </div>
+        <div>
+          <button onClick={signIn} className="button">
+            <span className="buttonText">Sign up with Google</span>
+          </button>
+        </div>
       </div>
+      ):(
       <div>
-        <button onClick={bypassLogin}>enter your username(for testing dashboard)</button>
-      </div>
-      <div>
-        <button onClick={signIn} className="button">
-          <img src="icons/google.svg" alt="google login" className="icon"></img>
-          <span className="buttonText">Sign in with Google</span>
+      <h1>Enter a username for your account</h1>
+        <input ref={inputRef} type="text" className="textBox"/>
+        <button onClick={registerUser} className="button">
+          <span className="buttonText">register username</span>
         </button>
       </div>
+      )}
     </div>
   );
 }
