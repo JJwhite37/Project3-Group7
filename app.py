@@ -216,11 +216,13 @@ def on_login(data):
     # logic for sign up, loginFlag = 0 means this is from sign up
     if data['loginFlag'] == 0:
         print("sign up")
+        #check to see if a user already exists. if so throw error, send user back to main login page
         if check_email_in_database(email, username):
             error_message = "error during signup: account already exists"
             SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
             return 0
         else:
+            #if user doesn't exist, then it will create a new user with email, username and set shares to 0
             db_user = Miner(email=email, worker_name=username, valid_shares=0)
             DATABASE.session.add(db_user)
             DATABASE.session.commit()
@@ -230,6 +232,7 @@ def on_login(data):
     # logic for sign in, loginFlag = 1 means this is from sign in
     if data['loginFlag'] == 1:
         print("sign in")
+        #check to see if a user does not exist. if so throw error, send user back to main login page
         if Miner.query.filter_by(email=email).first() is None:
             error_message = "error during signin: account does not exists"
             SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
