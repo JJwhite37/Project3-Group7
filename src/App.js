@@ -86,7 +86,6 @@ function App() {
           <tr>
             <td class="square">
               <div>
-                LeaderBoard Location (Powered BY DB)
                  <Leaderboard socket={socket} />
                 <button class="lookcoolbut" onClick={onClickButton}>test</button>
               </div>
