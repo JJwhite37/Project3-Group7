@@ -2,11 +2,12 @@
   text-align: center;
   background-color: grey;
   padding-left: 5%;
-  border-radius: 80px;
-  border-style: dotted dashed solid double;
-  min-width: 47em;
-  max-width: 2em;
+  border-radius: 25px;
+  min-width: 48em;
+  max-width: 50em;
   padding: 25px 20px;
+  margin: 0 auto;
+  
 
 }
 
@@ -21,16 +22,7 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+
 
 .App-link {
   color: #61dafb;
@@ -46,6 +38,7 @@
 }
 
 .tophead {
+  
   letter-spacing:0.1em;
 	text-align:center;
 	margin: 40px auto;
@@ -53,22 +46,39 @@
 	line-height: 145%;
 	font-size: 14pt;
 	font-variant: small-caps;
-  border: dashed;
-  border-radius: 15px;
-  border-style: dotted
+  border-style: dotted;
+  vertical-align: top;
 }
-.currminers{
-  vertical-align: text-top;
-  text-align: center;
 
+
+.dashboard{
+  background-color: #fcb43a;
+  color:#FFFFFF;
+  border-radius: 25px;
+  width: 100%;
+  vertical-align: middle;
+  padding-top: 30px;
+  padding-right: 5px;
+  padding-bottom: 30px;
+  padding-left: 5px;
+}
+.dashboard .square {
+  padding-top: 10px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  text-align: center;
+  vertical-align: top;
+  margin-top: 35px;
+  border-radius: 25px;
   
 }
-.dashboard{
-  background-color: #7289DA;
-  color:#FFFFFF;
-  border: dotted;
-  vertical-align: middle;
+.dashboard tbody tr {
+  padding-right: 25px;
+  background-color: red;
+  
 }
+
 .dashboard .button {
   border-style: dotted dashed solid double;
   border-radius: 5px;

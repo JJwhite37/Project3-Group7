@@ -75,36 +75,33 @@ function App() {
       {isLogin === true ? (
         //make sure that all dashboard elements go here in the conditional statement not outside
         <table class="dashboard">
+        <tr>
+          <div class="tophead">
+            {' '}
+            <Pool list={myList} />{' '}
+          </div>
+        </tr>
+        <tbody>
+        <div>
           <tr>
-            <div class="tophead">
-              {' '}
-              <Pool list={myList} />{' '}
-            </div>
+            <td class="square">
+              <div>
+                LeaderBoard Location (Powered BY DB)
+                 <Leaderboard socket={socket} />
+                <button class="lookcoolbut" onClick={onClickButton}>test</button>
+              </div>
+            </td>
+            <td class="square">
+              <CurrentMiners socket={socket} />
+            </td>
+            <td class="square">
+              <Discord />
+            </td>
           </tr>
-          <tbody>
-            <div>
-              <tr>
-                <td>
-                  <div>
-                    <Leaderboard socket={socket} />
-                    <button class="lookcoolbut" onClick={onClickButton}>
-                      test
-                    </button>
-                  </div>
-                </td>
-                <td class="currminers">
-                  <CurrentMiners socket={socket} />
-                </td>
-                <td>
-                  <Discord />
-                </td>
-              </tr>
-              <tr>
-                <Logout socket={socket} />
-              </tr>
-            </div>
-          </tbody>
-        </table>
+            <Logout socket={socket} />
+          </div>
+        </tbody>
+      </table>
       ) : (
         <div>
           <Login socket={socket} />
