@@ -62,7 +62,8 @@ POOLSTATS = [round((POOLOBJECT.stats().current_effective_hashrate/1000000),2),  
              POOLOBJECT.stats().valid_shares,                                            # poolStats[3]
              POOLOBJECT.stats().stale_shares,                                            # poolStats[4]
              POOLOBJECT.stats().invalid_shares,                                          # poolStats[5]
-             round((POOLOBJECT.balance()/1000000000000000000),4)                         # poolStats[6]
+             round((POOLOBJECT.balance()/1000000000000000000),4),                        # poolStats[6]
+             (round((POOLOBJECT.balance()/1000000000000000000),4)*2723)
             ]
 
 #print(POOLSTATS)
