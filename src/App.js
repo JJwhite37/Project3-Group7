@@ -76,7 +76,8 @@ function App() {
         //make sure that all dashboard elements go here in the conditional statement not outside
         <table class="dashboard">
         <tr>
-        <h1 style=" color: #111; font-family: 'Helvetica Neue', sans-serif; font-size: 120px; font-weight: bold; letter-spacing: -1px; line-height: 1; text-align: center; ">Econ Miner</h1>
+          
+        <h1 style={{color: "#23212c", fontsize: "1px", fontweight: "bold", textalign: "center", }}>Econ Miner</h1>
           <div class="tophead">
             {' '}
             <Pool list={myList} />{' '}
