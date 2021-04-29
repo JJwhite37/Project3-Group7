@@ -77,7 +77,7 @@ function App() {
         <table class="dashboard">
         <tr>
           
-        <div style={{color: "#23212c", fontsize: "120px", fontweight: "bold", textalign: "center", }}>Econ Miner</div>
+        <h1 style={{color: "#23212c", fontsize: "1px", fontweight: "bold", textalign: "center", }}>Econ Miner</h1>
           <div class="tophead">
             {' '}
             <Pool list={myList} />{' '}
