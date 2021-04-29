@@ -60,6 +60,8 @@ function App() {
         //make sure that all dashboard elements go here in the conditional statement not outside
         <table class="dashboard">
         <tr>
+          
+        <h1 style={{color: "#23212c", fontsize: "1px", fontweight: "bold", textalign: "center", }}>Econ Miner</h1>
           <div class="tophead">
             {' '}
             <Pool list={myList} />{' '}
@@ -70,6 +72,7 @@ function App() {
           <tr>
             <td class="square">
               <div>
+                Leaderboard
                  <Leaderboard socket={socket} />
                 <button class="lookcoolbut" onClick={onClickButton}>test</button>
               </div>
@@ -81,7 +84,7 @@ function App() {
               <Discord />
             </td>
           </tr>
-            <Logout socket={socket} />
+            <Logout class= "buttonstyle" socket={socket} />
           </div>
         </tbody>
       </table>

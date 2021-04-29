@@ -1,4 +1,5 @@
 .App {
+  margin-top: 20px;
   text-align: center;
   background-color:  #3a3637;
   padding-left: 5%;
@@ -164,7 +165,7 @@ MORE COMPLEX CSS STYLING
   text-shadow: rgb(100, 50, 90);
   color: white;
   max-height: 19em;
-  border-radius: 20px;
+  border-radius: 3px;
   overflow: scroll;
   overflow-x: hidden;
   height: 100%;
@@ -192,7 +193,7 @@ MORE COMPLEX CSS STYLING
   color: #fff !important;
   text-transform: uppercase;
   text-decoration: none;
-  background: #7289da;
+  background: #3a3637;
   padding: 10px;
   display: inline-block;
   border: none;
