@@ -28,7 +28,7 @@ jobs:
 
       - name: Set up Python
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DBNAME }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
