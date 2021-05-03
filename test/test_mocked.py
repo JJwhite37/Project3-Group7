@@ -8,7 +8,7 @@ import sys
 import copy
 
 sys.path.append(os.path.abspath('../../'))
-from app import database
+from app import DATABASE
 from app import Miner
 import models
 
@@ -54,8 +54,8 @@ class DatabaseAddUserTestCase(unittest.TestCase):
         for test in self.successful_test_params:
             self.INITIAL_db_mock = [INITIAL_USERNAME]
             print('Start of test:')
-            with patch('app.database.session.add', self.mocked_db_session_add):
-                with patch('app.database.session.commit', self.mocked_db_session_commit):
+            with patch('app.DATABASE.session.add', self.mocked_db_session_add):
+                with patch('app.DATABASE.session.commit', self.mocked_db_session_commit):
 
                     add_miner_to_database(test[KEY_INPUT])
                     actual_result = self.INITIAL_db_mock
