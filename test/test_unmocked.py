@@ -5,9 +5,7 @@ import os
 import sys
 import copy
 
-sys.path.append(os.path.abspath('../../'))
-from app import DBNAME
-import models
+sys.path.append(os.path.abspath('../'))
 
 from app import add_user_to_statuslist
 KEY_INPUT = 'input'
