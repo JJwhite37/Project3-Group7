@@ -1,6 +1,6 @@
 import flexpoolapi
 
-POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06C" #b
+POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb" #b
 try:
     POOLOBJECT = flexpoolapi.miner(POOL_ID)
 except:

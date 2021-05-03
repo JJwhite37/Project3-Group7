@@ -20,15 +20,17 @@ APP.config[
     'SQLALCHEMY_DATABASE_URI'] = DBNAME
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-DATABASE = SQLAlchemy(APP)
-
-import models
-DATABASE.create_all()
-
-Miner = models.get_miner_class(DATABASE)
-
+DB_WORKING = True
+try:
+    DATABASE = SQLAlchemy(APP)
+    import models
+    DATABASE.create_all()
+    Miner = models.get_miner_class(DATABASE)
+except:
+    DB_WORKING = False
 #-----------------------------------------------------
 
+print(DB_WORKING)
 
 CORS = CORS(APP, resources={r"/*": {"origins": "*"}})
 
@@ -38,19 +40,20 @@ SOCKETIO = SocketIO(
     json=json,
     manage_session=False
 )
-############################################################
-#                           API INFO (START)               #
-############################################################
+
+
 
 #The Adress of the flex pool were using to get stats
 POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb"
-POOLOBJECT = flexpoolapi.miner(POOL_ID)
+
+try:
+    POOLOBJECT = flexpoolapi.miner(POOL_ID)
+except:
+    print('Flexpool API not working')
+    
 POOLSTATS = api.get_poolStats()
 
-   
-############################################################
-#                     API INFO (END)                       #
-############################################################
+ 
 
 
 
@@ -74,64 +77,81 @@ def on_disconnect():
 #anywhere else and it might not render properly, like leaderboard data
 @SOCKETIO.on('Login')
 def on_login(data):
-    print(data)
+    if(DB_WORKING == False):
+        login_backup()
+    else:    
+        print(data)
+    
+        global STATUSLIST
+    
+        email = data['userEmail']
+        username = data['userName']
+        print(email, "login")
+        STATUSLIST = add_user_to_statuslist(email, STATUSLIST)
+        # logic for sign up, loginFlag = 0 means this is from sign up
+        if data['loginFlag'] == 0:
+            print("sign up")
+            #check to see if a user already exists. if so throw error, send user back to main login page
+            #needs to check both the email and username in DB
+            #checking email
+            if Miner.query.filter_by(email=email).first():
+                error_message = "error during signup: account already exists"
+                SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
+                return 0
+            #checking username
+            elif Miner.query.filter_by(worker_name=username).first():
+                error_message = "error during signup: account already exists"
+                SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
+                return 0
+            else:
+                #if user doesn't exist, then it will create a new user with email, username and set shares to 0
+                db_user = Miner(email=email, worker_name=username, valid_shares=0)
+                DATABASE.session.add(db_user)
+                DATABASE.session.commit()
+                 #currently nothing is done with the current user, not sure if someone needs this
+                current_user = {'email': email, 'username': username}
+                
+        # logic for sign in, loginFlag = 1 means this is from sign in
+        if data['loginFlag'] == 1:
+            print("sign in")
+            #check to see if a user does not exist. if so throw error, send user back to main login page
+            if Miner.query.filter_by(email=email).first() is None:
+                error_message = "error during signin: account does not exists"
+                SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
+                return 0
+            else:
+                #currently nothing is done with the current user, not sure if someone needs this
+                current_user = {'email': email, 'username': username}
+                
+    
+        SOCKETIO.emit('Login', broadcast=True, include_self=True)
+    
+        current_miners = get_current_miners_as_array()
+        print("Sending currentMiners data")
+        SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
+    
+        
+        leaderboard = a_leaderboard.get_leaderboard_as_array(Miner)
+        print(leaderboard)
+        print("Sending leaderboard data")
+        SOCKETIO.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
+    
+    
+        SOCKETIO.emit('connection', POOLSTATS, broadcast=True, include_self=True)
 
-    global STATUSLIST
 
-    email = data['userEmail']
-    username = data['userName']
-    print(email, "login")
-    STATUSLIST = add_user_to_statuslist(email, STATUSLIST)
-    # logic for sign up, loginFlag = 0 means this is from sign up
-    if data['loginFlag'] == 0:
-        print("sign up")
-        #check to see if a user already exists. if so throw error, send user back to main login page
-        #needs to check both the email and username in DB
-        #checking email
-        if Miner.query.filter_by(email=email).first():
-            error_message = "error during signup: account already exists"
-            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
-            return 0
-        #checking username
-        elif Miner.query.filter_by(worker_name=username).first():
-            error_message = "error during signup: account already exists"
-            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
-            return 0
-        else:
-            #if user doesn't exist, then it will create a new user with email, username and set shares to 0
-            db_user = Miner(email=email, worker_name=username, valid_shares=0)
-            DATABASE.session.add(db_user)
-            DATABASE.session.commit()
-             #currently nothing is done with the current user, not sure if someone needs this
-            current_user = {'email': email, 'username': username}
-            
-    # logic for sign in, loginFlag = 1 means this is from sign in
-    if data['loginFlag'] == 1:
-        print("sign in")
-        #check to see if a user does not exist. if so throw error, send user back to main login page
-        if Miner.query.filter_by(email=email).first() is None:
-            error_message = "error during signin: account does not exists"
-            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
-            return 0
-        else:
-            #currently nothing is done with the current user, not sure if someone needs this
-            current_user = {'email': email, 'username': username}
-            
 
+def login_backup():
     SOCKETIO.emit('Login', broadcast=True, include_self=True)
-
     current_miners = get_current_miners_as_array()
-    print("Sending currentMiners data")
     SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
-
-
-    leaderboard = a_leaderboard.get_leaderboard_as_array(Miner)
-    print("Sending leaderboard data")
+    leaderboard = [['', 'sickist', 381],  
+                    ['jrs95@njit.edu', 'CallMeClumsy', 0], 
+                    ['na354@njit.edu', 'abadio', 0]]
     SOCKETIO.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
 
 
     SOCKETIO.emit('connection', POOLSTATS, broadcast=True, include_self=True)
-
 @SOCKETIO.on('Logout')
 def on_logout():
     global STATUSLIST
@@ -144,30 +164,35 @@ def on_logout():
 def on_login_database_check(data):
     ''' Do stuff based on if info is already in the database'''
     print(data)
-    result = {}
-
-    # get miner based on worker_name
-    miner = Miner.query.filter_by(worker_name=data['userName']).first()
-
-    if miner.email == "":
-        # if email is empty, that means we can update row with good email
-        miner.email = data['userEmail']
-        DATABASE.session.commit()
-
-        # now continue login with updated database
+    if(DB_WORKING == False):
+        result = {}
         result['login'] = True
-    else:
-        # see if the email and worker_name are already part of the same row
-        in_database = a_leaderboard.check_email_in_database(data['userEmail'], data['userName'], Miner)
-        if in_database == True: # means email and worker_name are correct
-            # now continue login with no change in the database
+        SOCKETIO.emit('LoginDatabaseCheck', result, broadcast=False, include_self=True)
+    else:    
+        result = {}
+    
+        # get miner based on worker_name
+        miner = Miner.query.filter_by(worker_name=data['userName']).first()
+    
+        if miner.email == "":
+            # if email is empty, that means we can update row with good email
+            miner.email = data['userEmail']
+            DATABASE.session.commit()
+    
+            # now continue login with updated database
             result['login'] = True
         else:
-            # do not login correctly
-            result['login'] = False
-
-    # only send to client who emitted this check
-    SOCKETIO.emit('LoginDatabaseCheck', result, broadcast=False, include_self=True)
+            # see if the email and worker_name are already part of the same row
+            in_database = a_leaderboard.check_email_in_database(data['userEmail'], data['userName'], Miner)
+            if in_database == True: # means email and worker_name are correct
+                # now continue login with no change in the database
+                result['login'] = True
+            else:
+                # do not login correctly
+                result['login'] = False
+    
+        # only send to client who emitted this check
+        SOCKETIO.emit('LoginDatabaseCheck', result, broadcast=False, include_self=True)
 
 
 def add_user_to_statuslist(email, status_list_copy):
@@ -188,8 +213,10 @@ def get_current_miners_as_array():
 
     workers = get_workers()
     for worker in workers:
-        add_miner_to_current_miners([worker.worker_name, worker.stats().valid_shares], current_miners)
-
+        try:
+            add_miner_to_current_miners([worker.worker_name, worker.stats().valid_shares], current_miners)
+        except:
+            add_miner_to_current_miners([worker[0],worker[1]],current_miners)
     print(current_miners)
     return current_miners
 
@@ -197,7 +224,7 @@ def get_workers():
     try:
         return POOLOBJECT.workers()
     except:
-        return ['sickist',50]
+        return [['backup',50]]
 
 if __name__ == '__main__':
     SOCKETIO.run(
