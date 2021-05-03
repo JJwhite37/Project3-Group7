@@ -56,14 +56,14 @@ POOLOBJECT = flexpoolapi.miner(POOL_ID)
 # print("Pool balance:", POOLOBJECT.balance())
 # print('+------------------------------------------------+')
 
-POOLSTATS = [round((POOLOBJECT.stats().current_effective_hashrate/1000000),2),           # poolStats[0]
-             round((POOLOBJECT.stats().average_effective_hashrate/1000000),2),           # poolStats[1]
-             round((POOLOBJECT.stats().current_reported_hashrate/1000000),2),            # poolStats[2]
+POOLSTATS = [round((POOLOBJECT.stats().current_effective_hashrate/1000000), 2),           # poolStats[0]
+             round((POOLOBJECT.stats().average_effective_hashrate/1000000), 2),           # poolStats[1]
+             round((POOLOBJECT.stats().current_reported_hashrate/1000000), 2),            # poolStats[2]
              POOLOBJECT.stats().valid_shares,                                            # poolStats[3]
              POOLOBJECT.stats().stale_shares,                                            # poolStats[4]
              POOLOBJECT.stats().invalid_shares,                                          # poolStats[5]
-             round((POOLOBJECT.balance()/1000000000000000000),4),                        # poolStats[6]
-             (round((POOLOBJECT.balance()/1000000000000000000),4)*2723)
+             round((POOLOBJECT.balance()/1000000000000000000), 4),                        # poolStats[6]
+             (round((POOLOBJECT.balance()/1000000000000000000), 4)*2723)
             ]
 
 #print(POOLSTATS)
@@ -222,33 +222,35 @@ def on_login(data):
         #checking email
         if Miner.query.filter_by(email=email).first():
             error_message = "error during signup: account already exists"
-            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
-            return 0
+            SOCKETIO.emit('LoginFail', error_message, broadcast=False, include_self=True)
+            return
         #checking username
         elif Miner.query.filter_by(worker_name=username).first():
             error_message = "error during signup: account already exists"
-            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
-            return 0
+            SOCKETIO.emit('LoginFail', error_message, broadcast=False, include_self=True)
+            return
         else:
             #if user doesn't exist, then it will create a new user with email, username and set shares to 0
             db_user = Miner(email=email, worker_name=username, valid_shares=0)
             DATABASE.session.add(db_user)
             DATABASE.session.commit()
-             #currently nothing is done with the current user, not sure if someone needs this
+            #currently nothing is done with the current user, not sure if someone needs this
             current_user = {'email': email, 'username': username}
-            
+            print(current_user)
+
     # logic for sign in, loginFlag = 1 means this is from sign in
     if data['loginFlag'] == 1:
         print("sign in")
         #check to see if a user does not exist. if so throw error, send user back to main login page
         if Miner.query.filter_by(email=email).first() is None:
             error_message = "error during signin: account does not exists"
-            SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
-            return 0
+            SOCKETIO.emit('LoginFail', error_message, broadcast=False, include_self=True)
+            return
         else:
             #currently nothing is done with the current user, not sure if someone needs this
             current_user = {'email': email, 'username': username}
-            
+            print(current_user)
+
 
     SOCKETIO.emit('Login', broadcast=True, include_self=True)
 
@@ -267,7 +269,7 @@ def on_login(data):
 @SOCKETIO.on('Logout')
 def on_logout():
     global STATUSLIST
-    email = ''
+    #email = '' unused variable
 
     #STATUSLIST = remove_user_from_statuslist(email, STATUSLIST) not functional right now
     SOCKETIO.emit('Logout', broadcast=True, include_self=True)
