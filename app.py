@@ -1,5 +1,7 @@
 import os
 import flexpoolapi
+import api
+import a_leaderboard
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, send_from_directory, json, session
@@ -42,143 +44,14 @@ SOCKETIO = SocketIO(
 
 #The Adress of the flex pool were using to get stats
 POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb"
-
 POOLOBJECT = flexpoolapi.miner(POOL_ID)
+POOLSTATS = api.get_poolStats()
 
-#TOTAL REPORTED AND EFFECTIVE HASH RATE
-# print('+------------------ POOL STATS ------------------+')
-# print("Pool CURRENT Effective Hashrate:", POOLOBJECT.stats().current_effective_hashrate)
-# print("Pool AVERAGE Effective Hashrate:", POOLOBJECT.stats().average_effective_hashrate)
-# print("Pool CURRENT Reported Hashrate:", POOLOBJECT.stats().current_reported_hashrate)
-# print("Pool Valid Shares:", POOLOBJECT.stats().valid_shares)
-# print("Pool Stale Shares:", POOLOBJECT.stats().stale_shares)
-# print("Pool Invalid Shares:", POOLOBJECT.stats().invalid_shares)
-# print("Pool balance:", POOLOBJECT.balance())
-# print('+------------------------------------------------+')
-
-POOLSTATS = [round((POOLOBJECT.stats().current_effective_hashrate/1000000),2),           # poolStats[0]
-             round((POOLOBJECT.stats().average_effective_hashrate/1000000),2),           # poolStats[1]
-             round((POOLOBJECT.stats().current_reported_hashrate/1000000),2),            # poolStats[2]
-             POOLOBJECT.stats().valid_shares,                                            # poolStats[3]
-             POOLOBJECT.stats().stale_shares,                                            # poolStats[4]
-             POOLOBJECT.stats().invalid_shares,                                          # poolStats[5]
-             round((POOLOBJECT.balance()/1000000000000000000),4),                        # poolStats[6]
-             (round((POOLOBJECT.balance()/1000000000000000000),4)*2723)
-            ]
-
-#print(POOLSTATS)
-
-#INDIVIDUAL USER INFO
-def user_worker_info(user):
-
-    for worker in POOLOBJECT.workers():
-        if worker.worker_name == user:
-            print('+----------------- WORKER STATS -----------------+')
-            print("Workers CURRENT Effective Hashrate:", worker.stats().current_effective_hashrate)
-            print("Workers AVERAGE Effective Hashrate:", worker.stats().average_effective_hashrate)
-            print("Workers CURRENT Reported Hashrate:", worker.stats().current_reported_hashrate)
-            print("Workers AVERAGE Reported Hashrate:", worker.stats().average_reported_hashrate)
-            print("Workers Valid Shares:", worker.stats().valid_shares)
-            print("Workers Stale Shares:", worker.stats().stale_shares)
-            print("Workers Invalid Shares:", worker.stats().invalid_shares)
-            print('+------------------------------------------------+')
-            #print("Workers Effective Hashrate: ", worker.current_hashrate()[0])
-            #print("Workers Reported Hashrate: ", worker.current_hashrate()[1])
-            #print("Stats:", worker.stats().valid_shares)
-            #print("Daily Stats:", worker.daily_average_stats())
-            #print("Chart:", worker.chart()[0])
-
-#user_worker_info("sickist")
-
-
+   
 ############################################################
 #                     API INFO (END)                       #
 ############################################################
 
-
-
-
-
-
-############################################################
-#                     LEADERBOARD (start)                  #
-############################################################
-
-# METHODS
-def add_miner_to_database(data):
-    ''' Add miner to database '''
-    miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
-    DATABASE.session.add(miner)
-    DATABASE.session.commit()
-
-def delete_miner_to_database(data):
-    ''' Delete miner from database '''
-    miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
-    DATABASE.session.delete(miner)
-    DATABASE.session.commit()
-
-def check_email_in_database(email, worker_name):
-    print(Miner.query.filter_by(email=email, worker_name=worker_name).first())
-
-    if Miner.query.filter_by(email=email, worker_name=worker_name).first() is None:
-        # miner couldn't be found
-        print(email, "-", worker_name, "connection not in database")
-        return False
-    else:
-        # miner was found
-        print(email, "-", worker_name, "connection in database")
-        return True
-
-def populate_leaderboard_based_on_api():
-    print()
-    workers = POOLOBJECT.workers()
-    #miners = [] unused variable
-    for worker in workers:
-        # check if new worker appeared
-        if Miner.query.filter_by(worker_name=worker.worker_name).first() == None:
-            # worker_name doesn't exist yet in our database, so add to database
-            miner = Miner(email="", worker_name=worker.worker_name, valid_shares=worker.stats().valid_shares)
-            add_miner_to_database(miner)
-
-        else:
-            # miner already exists, so update valid_shares
-            miner_to_update = Miner.query.filter_by(worker_name=worker.worker_name).first()
-
-            # add worker shares to miner shares to get updated valid_shares
-            miner_to_update.valid_shares = miner_to_update.valid_shares + worker.valid_shares
-
-            DATABASE.session.commit()
-
-def get_leaderboard_as_array():
-    leaderboard = Miner.query.order_by(Miner.valid_shares.desc()).all()
-
-    array = []
-    for miner in leaderboard:
-        array.append([miner.email, miner.worker_name, miner.valid_shares])
-
-    return array
-
-QUERY = Miner.query.order_by(Miner.email).all()
-print("DATABASE:\n", QUERY)
-
-# create Miner
-STANDARD_MINER = Miner(email="tester2@testing.om", worker_name="daDaddy", valid_shares=34)
-add_miner_to_database(STANDARD_MINER)
-
-QUERY = Miner.query.order_by(Miner.email).all()
-print("DATABASE after adding:\n", QUERY)
-delete_miner_to_database(STANDARD_MINER)
-
-QUERY = Miner.query.order_by(Miner.email).all()
-print("DATABASE after deleting:\n", QUERY)
-
-
-#check Leaderboard
-# populate_leaderboard_based_on_api()
-
-############################################################
-#                     LEADERBOARD (END)                    #
-############################################################
 
 
 @APP.route('/', defaults={"filename": "index.html"})
@@ -196,11 +69,6 @@ def on_connect():
 @SOCKETIO.on('disconnect')
 def on_disconnect():
     print('User disconnected!')
-
-@SOCKETIO.on('testing')
-def on_chat():
-    print("testing works")
-    SOCKETIO.emit('testing', broadcast=True, include_self=True)
 
 #anything that needs to be rendered on the dashboard has to go here
 #anywhere else and it might not render properly, like leaderboard data
@@ -257,7 +125,7 @@ def on_login(data):
     SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
 
 
-    leaderboard = get_leaderboard_as_array()
+    leaderboard = a_leaderboard.get_leaderboard_as_array(Miner)
     print("Sending leaderboard data")
     SOCKETIO.emit('leaderboard', leaderboard, broadcast=True, include_self=True)
 
@@ -290,7 +158,7 @@ def on_login_database_check(data):
         result['login'] = True
     else:
         # see if the email and worker_name are already part of the same row
-        in_database = check_email_in_database(data['userEmail'], data['userName'])
+        in_database = a_leaderboard.check_email_in_database(data['userEmail'], data['userName'], Miner)
         if in_database == True: # means email and worker_name are correct
             # now continue login with no change in the database
             result['login'] = True
@@ -326,8 +194,10 @@ def get_current_miners_as_array():
     return current_miners
 
 def get_workers():
-    return POOLOBJECT.workers()
-
+    try:
+        return POOLOBJECT.workers()
+    except:
+        return ['sickist',50]
 
 if __name__ == '__main__':
     SOCKETIO.run(
