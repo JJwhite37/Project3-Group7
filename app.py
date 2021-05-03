@@ -40,9 +40,6 @@ SOCKETIO = SocketIO(
     json=json,
     manage_session=False
 )
-
-
-
 #The Adress of the flex pool were using to get stats
 POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb"
 
@@ -155,7 +152,7 @@ def login_backup():
 @SOCKETIO.on('Logout')
 def on_logout():
     global STATUSLIST
-    email = ''
+    #email = '' unused variable
 
     #STATUSLIST = remove_user_from_statuslist(email, STATUSLIST) not functional right now
     SOCKETIO.emit('Logout', broadcast=True, include_self=True)

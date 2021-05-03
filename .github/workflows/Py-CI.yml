@@ -39,4 +39,6 @@ jobs:
         run: pylint app.py
         
       - name: Run tests
-        run: python -m unittest
+        env:
+          DATABASE_URL: ${{ secrets.DBNAME }}
+        run: python -m unittest discover test
