@@ -5,7 +5,7 @@ import os
 import sys
 import copy
 
-sys.path.append(os.path.abspath('../../'))
+sys.path.append(os.path.abspath('../'))
 from app import DBNAME
 import models
 
