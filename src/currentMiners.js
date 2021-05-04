@@ -5,7 +5,7 @@ import CurrentMinersRow from './CurrentMinersRow';
 function CurrentMiners(props) {
     console.log('In currentMiners:');
   
-    const { socket } = props;
+    const { socket, ratio } = props;
     const [currentMiners, setCurrentMiners] = useState([]);
 
     useEffect(() => {
@@ -27,11 +27,12 @@ function CurrentMiners(props) {
                         <tr>
                             <th> worker_name </th>
                             <th> valid_shares </th>
+                            <th> money_earned </th>
                         </tr>
                         
                         <tr>
                             {currentMiners.map((item, index) => (
-                                <CurrentMinersRow name={index} array={item} socket= {socket}/>
+                                <CurrentMinersRow name={index} array={item} socket= {socket} ratio={ratio}/>
                             ))}
                         </tr>
                     </table>

@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react';
 import Row from './Row';
 
 function Leaderboard(props){
-    const { socket } = props;
+    console.log("In Leaderboard:");
     
+    const { socket, ratio } = props;
     const [leaderboard, setLeaderboard] = useState([['','Loading...',0]]);
     
     useEffect(() => {
@@ -26,11 +27,12 @@ function Leaderboard(props){
                         <tr>
                             <th> worker_name </th>
                             <th> valid_shares </th>
+                            <th> money_earned </th>
                         </tr>
                         
                         <tr>
                             {leaderboard.map((item, index) => (
-                                <Row name={index} array={item}/>
+                                <Row name={index} array={item} socket={socket} ratio={ratio}/>
                             ))}
                         </tr>
                     </table>
