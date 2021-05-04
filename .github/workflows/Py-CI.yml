@@ -35,8 +35,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt 
         
-      - name: Lint files
+      - name: Lint app.py
         run: pylint app.py
+        
+      - name: Lint api.py
+        run: pylint api.py
+        
+      - name: Lint a_leaderboard.py
+        run: pylint a_leaderboard.py
         
       - name: Run tests
         env:
