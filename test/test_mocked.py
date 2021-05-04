@@ -72,7 +72,7 @@ class DatabaseAddUserTestCase(unittest.TestCase):
                     # print("after asserts")
             print('end of test\n')
 
-
+#second mocked test checking if an email is currently in DB
 from app import query_database_for_email 
 DB_INPUT = "input"
 DB_EXPECTED = "expected"
