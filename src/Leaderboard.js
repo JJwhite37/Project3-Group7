@@ -19,6 +19,7 @@ function Leaderboard(props){
     console.log(leaderboard)
     return(
         <div>
+            Leaderboard
             <span>
                 <div class="leftpad"></div>
                 <div class="scrollboard">

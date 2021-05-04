@@ -53,48 +53,57 @@ function DashboardAndLogin() {
       setLogin(false);
     });
   }, []);
-
-  return (
-    <div className = "DashboardAndLogin">
-      {isLogin === true ? (
-        //make sure that all dashboard elements go here in the conditional statement not outside
+  
+  
+  if (isLogin === true){
+    return (
+      <div className = "DashboardAndLogin">
         <table class="dashboard">
-        <tr>
           
-        <h1 style={{color: "#23212c", fontsize: "1px", fontweight: "bold", textalign: "center", }}>Econ Miner</h1>
-          <div class="tophead">
-            {' '}
-            <Pool list={myList} />{' '}
-          </div>
-        </tr>
-        <tbody>
-        <div>
           <tr>
-            <td class="square">
-              <div>
-                Leaderboard
-                 <Leaderboard socket={socket} />
-                <button class="lookcoolbut" onClick={onClickButton}>test</button>
-              </div>
-            </td>
-            <td class="square">
-              <CurrentMiners socket={socket} />
-            </td>
-            <td class="square">
-              <Discord />
-            </td>
+            <h1 style={{color: "#23212c", fontsize: "1px", fontweight: "bold", textalign: "center", }}>Econ Miner</h1>
+            <div class="tophead">
+              {' '}
+              <Pool list={myList} />{' '}
+            </div>
           </tr>
-            <Logout class= "buttonstyle" socket={socket} />
-          </div>
-        </tbody>
-      </table>
-      ) : (
+          
+          <tbody>
+            <div>
+              <tr>
+                
+                <td class="square">
+                  <Leaderboard socket={socket} />
+                  <button class="lookcoolbut" onClick={onClickButton}>test</button>
+                </td>
+                
+                <td class="square">
+                  <CurrentMiners socket={socket} />
+                </td>
+                
+                <td class="square">
+                  <Discord />
+                </td>
+                
+              </tr>
+              
+              <Logout class= "buttonstyle" socket={socket} />
+            </div>
+          </tbody>
+          
+        </table>
+      </div>
+      );
+  }
+  else if (isLogin === false){
+    return(
+      <div className = "DashboardAndLogin">
         <div class="login">
-          <Login socket={socket} />
+            <Login socket={socket} />
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default DashboardAndLogin;
