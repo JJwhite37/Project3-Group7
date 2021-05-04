@@ -21,7 +21,7 @@ function App() {
     return (
       <div>
         <LandingPage />
-        <button onClick={onClickButton}>Next Page</button>
+        <button onClick={onClickButton}> Proceed to Login </button>
       </div>
     );
   }
