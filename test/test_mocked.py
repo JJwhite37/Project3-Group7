@@ -12,7 +12,7 @@ from app import DATABASE
 from app import Miner
 import models
 
-from app import add_miner_to_database
+from app import add_miner_to_database 
 KEY_INPUT = 'username'
 KEY_EXPECTED = 'expected'
 
@@ -72,6 +72,54 @@ class DatabaseAddUserTestCase(unittest.TestCase):
                     # print("after asserts")
             print('end of test\n')
 
+#second mocked test checking if an email is currently in DB
+from app import query_database_for_email 
+DB_INPUT = "input"
+DB_EXPECTED = "expected"
+
+class QueryEmailTestCase(unittest.TestCase):
+    def setUp(self):
+        self.success_test_params = [
+            {
+                DB_INPUT: MINER3,
+                DB_EXPECTED: False
+            }
+            ]
+        self.failure_test_params = [
+             {
+                DB_INPUT: MINER2,
+                DB_EXPECTED: True
+            }
+            ]
+        
+        initial_miner = Miner(email='JoeShmoe@njit.edu', worker_name='shmoe', valid_shares=20)
+        self.INITIAL_db_mock = [initial_miner.email]
+    
+    def mocked_email_query_all(self):
+        return self.INITIAL_db_mock
+        
+    def mocked_db_session_commit(self):
+        return self.INITIAL_db_mock
+    
+    def test_success(self):
+        for test in self.success_test_params:
+            with patch('app.DATABASE.session.query') as mocked_query:
+                mocked_query.all = self.mocked_email_query_all
+                actual_result = query_database_for_email(test[DB_INPUT].email)
+                expected_result = test[DB_EXPECTED]
+                print(test[DB_INPUT].email)
+                
+                self.assertEqual(actual_result, expected_result)
+
+    def test_failure(self):
+        for test in self.failure_test_params:
+            with patch('app.DATABASE.session.query') as mocked_query:
+                mocked_query.all = self.mocked_email_query_all
+                actual_result = query_database_for_email(test[DB_INPUT].email)
+                expected_result = test[DB_EXPECTED]
+                
+                self.assertNotEqual(actual_result, expected_result)
+        print('end of test\n')
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,7 +3,7 @@ import flexpoolapi
 POOL_ID = "0xe3c1aB226b8Ebe645729590191E6505eF37a06Cb"
 POOLOBJECT = flexpoolapi.miner(POOL_ID)
 
-def add_miner_to_database(data,DATABASE):
+def add_miner_to_database(data, DATABASE):
     ''' Add miner to database '''
     miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
     DATABASE.session.add(miner)
@@ -54,4 +54,3 @@ def get_leaderboard_as_array(Miner):
         array.append([miner.email, miner.worker_name, miner.valid_shares])
 
     return array
-
