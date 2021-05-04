@@ -22,6 +22,9 @@ function LandingPage() {
           We also showcase the leaderboard for all the people mining for that company so the company can see the dedicated miners and reward them somehow.
           They will also be able to see the users who mined in the last 24 hours.
         </p>
+        <p>
+          When hovering over the currentMiners, statistics of that specific miner will be displayed to see how they mined.  This makes it so other users could ask questions for that miner in the Discord to make it a tight-knit community.  This would create discussions.
+        </p>
         
         <h2>  Why we matter: </h2>
         <p>
