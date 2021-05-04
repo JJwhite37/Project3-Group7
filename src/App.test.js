@@ -1,9 +1,8 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import App from './App.js';
-import Signup from './Signup.js';
+import Login from './Login.js';
 
 test('changes to sign in page after clicking sign in button', () => {
-  const resultRender = render(<App />);
+  const resultRender = render(<Login />);
 
   const signInButton = screen.getByText('Sign in');
   expect(signInButton).toBeInTheDocument();
@@ -17,7 +16,7 @@ test('changes to sign in page after clicking sign in button', () => {
 });
 
 test('changes to register username page then to sign up page', () => {
-  const resultRender = render(<App />);
+  const resultRender = render(<Login />);
 
   const signInButton = screen.getByText('Sign up');
   expect(signInButton).toBeInTheDocument();
