@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 
 function CurrentMinersRow(props) {
     console.log("Props of CurrentMinersRow")

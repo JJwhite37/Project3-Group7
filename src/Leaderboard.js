@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Row from './Row';
+import { socket } from './App.js';
 
 function Leaderboard(props){
-    const { socket } = props;
     
     const [leaderboard, setLeaderboard] = useState([['test', 'testName', 17]])
     

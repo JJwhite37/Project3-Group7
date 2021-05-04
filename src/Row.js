@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 
 function Row(props) {
     console.log("Props of Row")
