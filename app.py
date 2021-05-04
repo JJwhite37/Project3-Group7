@@ -121,7 +121,7 @@ def on_login(data):
                 print(current_user)
 
 
-        SOCKETIO.emit('Login', broadcast=True, include_self=True)
+        SOCKETIO.emit('Login', broadcast=False, include_self=True)
 
         current_miners = get_current_miners_as_array()
         print("Sending currentMiners data")
@@ -152,7 +152,7 @@ def query_database_for_email(email):
 
 
 def login_backup():
-    SOCKETIO.emit('Login', broadcast=True, include_self=True)
+    SOCKETIO.emit('Login', broadcast=False, include_self=True)
     current_miners = get_current_miners_as_array()
     SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
     leaderboard = [['', 'sickist', 381],
