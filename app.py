@@ -5,7 +5,6 @@ from flask import Flask, send_from_directory, json, session
 from flask_socketio import SocketIO
 from flask_cors import CORS
 import flexpoolapi
-import schedule
 import api
 import a_leaderboard
 
@@ -52,8 +51,6 @@ except:
 POOLSTATS = api.get_pool_stats()
 
 
-# every day, populate leaderboard based on api
-schedule.every().day.at("00:00").do(a_leaderboard.populate_leaderboard_based_on_api)
 
 
 @APP.route('/', defaults={"filename": "index.html"})
