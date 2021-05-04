@@ -1,5 +1,3 @@
-import AboutEcommMiner from './AboutEcommMiner';
-
 function LandingPage() {
     return (
       <div>

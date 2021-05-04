@@ -1,18 +1,32 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 
-export function Pool(props) {
-  //const newList = [...props.list];
-
+function Pool(props) {
+  const { socket } = props;
+  const [myList, changeList] = useState([]);
+  
+  useEffect(() => {
+    socket.on('connection', (data) => {
+      console.log('connetion event received!!');
+      
+      changeList([...data]);
+      console.log(data);
+    });
+  }, []);
+  
   return (
     <div class="pool">
-      <div>Current USD$: {props.list[7]}</div>
-      <div>Balance: {props.list[6]}</div>
-      <div>Current Effective Hashrate: {props.list[0]}</div>
-      <div>Average Effective Hashrate: {props.list[1]}</div>
-      <div>Current Reported Hashrate: {props.list[2]}</div>
-      <div>Valid Shares: {props.list[3]}</div>
-      <div>Stale Shares: {props.list[4]}</div>
-      <div>Invalid Shares: {props.list[5]}</div>
+      <h2> POOL STATISTICS</h2>
+      <div>Current USD$: {myList[7]}</div>
+      <div>Balance: {myList[6]}</div>
+      <div>Current Effective Hashrate: {myList[0]}</div>
+      <div>Average Effective Hashrate: {myList[1]}</div>
+      <div>Current Reported Hashrate: {myList[2]}</div>
+      <div>Valid Shares: {myList[3]}</div>
+      <div>Stale Shares: {myList[4]}</div>
+      <div>Invalid Shares: {myList[5]}</div>
     </div>
   );
 }
+
+export default Pool;

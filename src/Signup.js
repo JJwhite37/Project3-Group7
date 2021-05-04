@@ -1,27 +1,26 @@
 import { useRef, useState } from 'react';
 import { useGoogleLogin } from 'react-google-login';
-//import io from 'socket.io-client';
 import { refreshToken } from './refreshToken';
 import './Signup.css';
-import { socket } from './App.js';
 
-function Signup() {
+function Signup(props) {
+  const { socket } = props;
+  
   const [isUserScreen, setUserScreen] = useState(false);
   const [userName, setUserName] = useState(null);
-  //will read in the clientID for google login from .env file
-  const clientId = process.env.REACT_APP_LOGINID;
-
+  
   const inputRef = useRef();
+  
+  const clientId = process.env.REACT_APP_LOGINID;
 
   const onSuccess = (userInfo) => {
     console.log('Login Success', userInfo.profileObj);
     console.log(userInfo.profileObj['email']);
-    //user's email
-    const userEmail = userInfo.profileObj['email'];
-    //url of google profile image
-    const userPic = userInfo.profileObj['imageUrl'];
-    //tells server if signing in or signing up
-    var loginFlag = 0;
+    
+    const userEmail = userInfo.profileObj['email']; //user's email
+    const userPic = userInfo.profileObj['imageUrl']; //url of google profile image
+    var loginFlag = 0; //tells server if signing in or signing up
+    
     socket.emit('Login', { userName: userName, userEmail: userEmail, userPic: userPic, loginFlag: loginFlag });
     refreshToken(userInfo);
   };
@@ -38,38 +37,45 @@ function Signup() {
     accessType: 'offline',
   });
 
-function registerUser() {
+  function registerUser() {
     console.log('register username');
-    //username from text input
-    const name = inputRef.current.value;
+    
+    const name = inputRef.current.value; //username from text input
+    
     setUserName(name);
     setUserScreen(true);
-  };
-
-  return (
-    <div>
-      {isUserScreen === true ? (
+  }
+  
+  if (isUserScreen === true){
+    return (
       <div>
+      
         <div>
           <h1>Use your google account to sign up</h1>
         </div>
+        
         <div>
           <button onClick={signIn} className="button">
             <span className="buttonText">Sign up with Google</span>
           </button>
         </div>
+        
       </div>
-      ):(
+    );
+  }
+  else if (isUserScreen === false){
+    return (
       <div>
-      <h1>Enter a username for your account</h1>
+        <h1>Enter a username for your account</h1>
         <input ref={inputRef} type="text" className="textBox"/>
+        
         <button onClick={registerUser} className="button">
           <span className="buttonText">register username</span>
         </button>
       </div>
-      )}
-    </div>
-  );
+    );
+  }
+  
 }
 
 export default Signup;

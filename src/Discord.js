@@ -1,6 +1,4 @@
-import './App.css';
-
-export function Discord(props) {
+function Discord(props) {
   return (
     <div>
       <iframe
@@ -15,3 +13,5 @@ export function Discord(props) {
     </div>
   );
 }
+
+export default Discord;
