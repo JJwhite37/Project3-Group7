@@ -4,7 +4,7 @@ function Row(props) {
     console.log("Props of Row");
     console.log(props);
     
-    const money_earned = ratio*array[2];
+    let money_earned = ratio*array[2];
 
     
     return (

@@ -5,7 +5,7 @@ function CurrentMinersRow(props) {
     const { socket, array, ratio } = props;
     const [isShown, setIsShown] = useState(false);
     
-    const money_earned = ratio*array[1];
+    let money_earned = ratio*array[1];
 
     
     console.log("isShown: ", isShown);

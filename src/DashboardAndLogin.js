@@ -21,6 +21,11 @@ function DashboardAndLogin(props) {
     socket.emit('testing');
   }
 
+  function onRatioButton() {
+    console.log('Ratio Button is clicked');
+    socket.emit('ratio');
+  }
+
   useEffect(() => {
     socket.on('Login', () => {
       console.log('Login event received!!');
@@ -32,8 +37,8 @@ function DashboardAndLogin(props) {
       setLogin(false);
     });
     
-    socket.on('Ratio', (data) => {
-      console.log('Ratio event received!!');
+    socket.on('ratio', (data) => {
+      console.log('ratio event received!!');
       console.log(data);
       
       setRatio(data);
@@ -70,6 +75,7 @@ function DashboardAndLogin(props) {
                 
                 <td class="square">
                   <CurrentMiners socket={socket} ratio={ratio}/>
+                  <button class="lookcoolbut" onClick={onRatioButton}>Update Ratio</button>
                 </td>
                 
                 <td class="square">

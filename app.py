@@ -211,7 +211,13 @@ def on_worker_hover(data):
     userInfo = api.user_worker_info(data['name'])
     print(userInfo)
     SOCKETIO.emit('UserInfo', userInfo, broadcast=False, include_self=True)
-   
+
+@SOCKETIO.on('ratio')
+def on_ratio():   
+    print("Get Ratio")
+    ratio = get_current_ratio()
+    print("Sending Ratio:", ratio)
+    SOCKETIO.emit('ratio', ratio, broadcast=True, include_self=True)
 
 def add_user_to_statuslist(email, status_list_copy):
     ''' adds username to logged in statusList '''
@@ -237,6 +243,10 @@ def get_current_miners_as_array():
             add_miner_to_current_miners([worker[0], worker[1]], current_miners)
     print(current_miners)
     return current_miners
+    
+def get_current_ratio():
+    ratio = 5/8
+    return ratio
 
 def get_workers():
     try:
