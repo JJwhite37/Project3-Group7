@@ -103,9 +103,9 @@ def on_login(data):
             else:
                 #if user doesn't exist, then it will create a new user with email, username and set shares to 0
                 db_user = Miner(email=email, worker_name=username, valid_shares=0)
-                DATABASE.session.add(db_user)
-                DATABASE.session.commit()
-                 #currently nothing is done with the current user, not sure if someone needs this
+                add_miner_to_database(db_user)
+                query_database_for_email(email)
+                #currently nothing is done with the current user, not sure if someone needs this
                 current_user = {'email': email, 'username': username}
                 
         # logic for sign in, loginFlag = 1 means this is from sign in
@@ -117,6 +117,7 @@ def on_login(data):
                 SOCKETIO.emit('LoginFail',error_message, broadcast=False, include_self=True)
                 return 0
             else:
+                query_database_for_email(email)
                 #currently nothing is done with the current user, not sure if someone needs this
                 current_user = {'email': email, 'username': username}
                 
@@ -136,7 +137,20 @@ def on_login(data):
     
         SOCKETIO.emit('connection', POOLSTATS, broadcast=True, include_self=True)
 
+def add_miner_to_database(data):
+    ''' Add miner to database '''
+    miner = data #Miner(email=data[0], worker_name=data[1], valid_shares=data[2])
+    DATABASE.session.add(miner)
+    DATABASE.session.commit()
 
+def query_database_for_email(email):
+    ''' Query databse to check if email already exists '''
+    if Miner.query.filter_by(email=email).first() is None:
+        return False
+    else:
+        return True
+    
+    
 
 def login_backup():
     SOCKETIO.emit('Login', broadcast=True, include_self=True)
