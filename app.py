@@ -51,9 +51,6 @@ except:
 POOLSTATS = api.get_pool_stats()
 
 
-
-
-
 @APP.route('/', defaults={"filename": "index.html"})
 @APP.route('/<path:filename>')
 def index(filename):
@@ -171,7 +168,7 @@ def on_logout():
     #email = '' unused variable
 
     #STATUSLIST = remove_user_from_statuslist(email, STATUSLIST) not functional right now
-    SOCKETIO.emit('Logout', broadcast=True, include_self=True)
+    SOCKETIO.emit('Logout', broadcast=False, include_self=True)
 
 @SOCKETIO.on('LoginDatabaseCheck')
 def on_login_database_check(data):
