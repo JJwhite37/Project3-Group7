@@ -48,7 +48,7 @@ try:
 except:
     print('Flexpool API not working')
 
-POOLSTATS = api.get_poolStats()
+POOLSTATS = api.get_pool_stats()
 
 
 
