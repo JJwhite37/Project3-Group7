@@ -53,6 +53,7 @@ POOLSTATS = api.get_pool_stats()
 
 
 
+
 @APP.route('/', defaults={"filename": "index.html"})
 @APP.route('/<path:filename>')
 def index(filename):
