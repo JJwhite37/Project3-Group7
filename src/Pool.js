@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Pool(props) {
+function Pool(props) {
   //const newList = [...props.list];
 
   return (
@@ -16,3 +16,5 @@ export function Pool(props) {
     </div>
   );
 }
+
+export default Pool;
