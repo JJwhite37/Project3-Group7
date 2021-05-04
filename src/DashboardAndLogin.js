@@ -1,6 +1,5 @@
 import './DashboardAndLogin.css';
 import { useState, useEffect } from 'react';
-import io from 'socket.io-client';
 
 import Pool from './Pool.js';
 import Discord from './Discord.js';
@@ -9,13 +8,12 @@ import Logout from './Logout.js';
 import CurrentMiners from './currentMiners';
 import Leaderboard from './Leaderboard';
 
-export const socket = io(); // Connects to socket connection
-//var clicked = 0; Tabbed out for linting
-function DashboardAndLogin() {
-  const [isLogin, setLogin] = useState(false);
+function DashboardAndLogin(props) {
+  const { socket } = props;
+  
   console.log('In DashboardAndLogin.js:');
-
-  const [myList, changeList] = useState([]);
+  
+  const [isLogin, setLogin] = useState(false);
 
   function onClickButton() {
     console.log('Button is clicked');
@@ -24,23 +22,16 @@ function DashboardAndLogin() {
 
   useEffect(() => {
     socket.on('testing', () => {
-      console.log('testing event working');
-    });
-    
-    socket.on('connection', (data) => {
-      console.log('testing event working');
-      const newList = [...data];
-      changeList(newList);
-      console.log(data);
+      console.log('testing event received!!');
     });
     
     socket.on('Login', () => {
-      console.log('Login success');
+      console.log('Login event received!!');
       setLogin(true);
     });
     
     socket.on('Logout', () => {
-      console.log('Logout success');
+      console.log('Logout event received!!');
       setLogin(false);
     });
     
@@ -55,7 +46,7 @@ function DashboardAndLogin() {
             <h1 style={{color: "#23212c", fontsize: "1px", fontweight: "bold", textalign: "center", }}>Econ Miner</h1>
             <div class="tophead">
               {' '}
-              <Pool list={myList} />{' '}
+              <Pool socket={ socket } />{' '}
             </div>
           </tr>
           

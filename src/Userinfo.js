@@ -6,13 +6,15 @@ import { socket } from './App';
 export function UserInfo(props) {
   const [myList, changeList] = useState([]);
   const [isShown, setIsShown] = useState(false);
+  
   socket.emit('UserInfo', {name: props.name})
+  
   useEffect(() => {
-        socket.on('UserInfo', (data) => {
-            console.log('UserInfo returned ');
-            console.log(data);
-            changeList(data);
-            
+    socket.on('UserInfo', (data) => {
+      console.log('UserInfo returned ');
+      console.log(data);
+      
+      changeList(data);
     });
   });
   

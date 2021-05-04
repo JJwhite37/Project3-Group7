@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import io from 'socket.io-client';
 
 import DashboardAndLogin from './DashboardAndLogin';
 import LandingPage from './LandingPage';
 
-export const socket = io(); // Connects to socket connection
-//var clicked = 0; Tabbed out for linting
+export const socket = io(); 
 
 function App() {
   const [onLanding, setLanding] = useState(true);
@@ -28,7 +27,7 @@ function App() {
   else if (onLanding == false){
     return (
       <div>
-        <DashboardAndLogin />
+        <DashboardAndLogin socket={ socket } />
       </div>
     );
   }

@@ -16,7 +16,7 @@ function CurrentMiners(props) {
 
       setCurrentMiners(data);
     });
-  });
+  }, []);
 
   console.log('In currentMiners, currentMiners:');
   console.log(currentMiners);
@@ -32,6 +32,7 @@ function CurrentMiners(props) {
                             <th> worker_name </th>
                             <th> valid_shares </th>
                         </tr>
+                        
                         <tr>
                             {currentMiners.map((item, index) => (
                                 <CurrentMinersRow name={index} array={item}/>

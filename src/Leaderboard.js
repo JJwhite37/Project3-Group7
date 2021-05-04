@@ -5,18 +5,17 @@ import Row from './Row';
 function Leaderboard(props){
     const { socket } = props;
     
-    const [leaderboard, setLeaderboard] = useState([['test', 'testName', 17]])
+    const [leaderboard, setLeaderboard] = useState([['test', 'testName', 17]]);
     
     useEffect(() => {
         socket.on('leaderboard', (data) => {
             console.log('Leaderboard event received!');
-            console.log(data)
+            console.log(data);
             
             setLeaderboard(data);
         });
     }, []);
     
-    console.log(leaderboard)
     return(
         <div>
             Leaderboard
@@ -28,6 +27,7 @@ function Leaderboard(props){
                             <th> worker_name </th>
                             <th> valid_shares </th>
                         </tr>
+                        
                         <tr>
                             {leaderboard.map((item, index) => (
                                 <Row name={index} array={item}/>
