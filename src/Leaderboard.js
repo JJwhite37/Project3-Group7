@@ -5,7 +5,7 @@ import Row from './Row';
 function Leaderboard(props){
     const { socket } = props;
     
-    const [leaderboard, setLeaderboard] = useState([['test', 'testName', 17]]);
+    const [leaderboard, setLeaderboard] = useState([['','Loading...',0]]);
     
     useEffect(() => {
         socket.on('leaderboard', (data) => {

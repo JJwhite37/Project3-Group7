@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { UserInfo } from './Userinfo';
 
 function CurrentMinersRow(props) {
+    const { socket} = props;
     const [isShown, setIsShown] = useState(false);
 
-    console.log(isShown)
+    console.log("isShown: ", isShown);
     
     return (
         <div
@@ -17,10 +18,9 @@ function CurrentMinersRow(props) {
             </tr>
             
             {isShown && (
-                
-                <UserInfo name={props.array[0]} />
-                
-                )}
+                <UserInfo name={props.array[0]} socket={socket}/>
+                )
+            }
         </div>
         
         

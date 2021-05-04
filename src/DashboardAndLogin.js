@@ -21,10 +21,6 @@ function DashboardAndLogin(props) {
   }
 
   useEffect(() => {
-    socket.on('testing', () => {
-      console.log('testing event received!!');
-    });
-    
     socket.on('Login', () => {
       console.log('Login event received!!');
       setLogin(true);
@@ -35,6 +31,9 @@ function DashboardAndLogin(props) {
       setLogin(false);
     });
     
+    socket.on('testing', () => {
+      console.log('testing event received!!');
+    });
   }, []);
   
   if (isLogin === true){

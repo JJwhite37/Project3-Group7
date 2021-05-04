@@ -8,16 +8,15 @@ function Pool(props) {
   useEffect(() => {
     socket.on('connection', (data) => {
       console.log('connetion event received!!');
-      const newList = [...data];
       
-      changeList(newList);
+      changeList([...data]);
       console.log(data);
     });
-    
   }, []);
   
   return (
     <div class="pool">
+      <h2> POOL STATISTICS</h2>
       <div>Current USD$: {myList[7]}</div>
       <div>Balance: {myList[6]}</div>
       <div>Current Effective Hashrate: {myList[0]}</div>

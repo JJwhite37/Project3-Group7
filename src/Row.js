@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react';
-
 function Row(props) {
-    console.log("Props of Row")
-    console.log(props)
+    console.log("Props of Row");
+    console.log(props);
     
     return (
         <tr>

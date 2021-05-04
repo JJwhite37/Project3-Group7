@@ -3,23 +3,19 @@ import { useState, useEffect } from 'react';
 import CurrentMinersRow from './CurrentMinersRow';
 
 function CurrentMiners(props) {
-  const { socket } = props;
+    console.log('In currentMiners:');
+  
+    const { socket } = props;
+    const [currentMiners, setCurrentMiners] = useState([]);
 
-  const [currentMiners, setCurrentMiners] = useState([]);
+    useEffect(() => {
+        socket.on('currentMiners', (data) => {
+            console.log('currentMiners event received!');
+            console.log(data);
 
-  console.log('In currentMiners:');
-
-  useEffect(() => {
-    socket.on('currentMiners', (data) => {
-      console.log('currentMiners event received!');
-      console.log(data);
-
-      setCurrentMiners(data);
-    });
-  }, []);
-
-  console.log('In currentMiners, currentMiners:');
-  console.log(currentMiners);
+            setCurrentMiners(data);
+        });
+    }, []);
   
   return(
         <div>
@@ -35,7 +31,7 @@ function CurrentMiners(props) {
                         
                         <tr>
                             {currentMiners.map((item, index) => (
-                                <CurrentMinersRow name={index} array={item}/>
+                                <CurrentMinersRow name={index} array={item} socket= {socket}/>
                             ))}
                         </tr>
                     </table>

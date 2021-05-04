@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { socket } from './App';
 
 export function UserInfo(props) {
+  const { socket } = props;
+  
   const [myList, changeList] = useState([]);
   const [isShown, setIsShown] = useState(false);
   
-  socket.emit('UserInfo', {name: props.name})
+  socket.emit('UserInfo', {name: props.name});
   
   useEffect(() => {
     socket.on('UserInfo', (data) => {
@@ -17,7 +18,6 @@ export function UserInfo(props) {
       changeList(data);
     });
   });
-  
   
   return (
     <div class="info">
