@@ -51,9 +51,6 @@ except:
 POOLSTATS = api.get_pool_stats()
 
 
-
-
-
 @APP.route('/', defaults={"filename": "index.html"})
 @APP.route('/<path:filename>')
 def index(filename):
@@ -124,7 +121,7 @@ def on_login(data):
                 print(current_user)
 
 
-        SOCKETIO.emit('Login', broadcast=True, include_self=True)
+        SOCKETIO.emit('Login', broadcast=False, include_self=True)
 
         current_miners = get_current_miners_as_array()
         print("Sending currentMiners data")
@@ -155,7 +152,7 @@ def query_database_for_email(email):
 
 
 def login_backup():
-    SOCKETIO.emit('Login', broadcast=True, include_self=True)
+    SOCKETIO.emit('Login', broadcast=False, include_self=True)
     current_miners = get_current_miners_as_array()
     SOCKETIO.emit('currentMiners', current_miners, broadcast=True, include_self=True)
     leaderboard = [['', 'sickist', 381],
@@ -171,7 +168,7 @@ def on_logout():
     #email = '' unused variable
 
     #STATUSLIST = remove_user_from_statuslist(email, STATUSLIST) not functional right now
-    SOCKETIO.emit('Logout', broadcast=True, include_self=True)
+    SOCKETIO.emit('Logout', broadcast=False, include_self=True)
 
 @SOCKETIO.on('LoginDatabaseCheck')
 def on_login_database_check(data):
@@ -207,6 +204,14 @@ def on_login_database_check(data):
         # only send to client who emitted this check
         SOCKETIO.emit('LoginDatabaseCheck', result, broadcast=False, include_self=True)
 
+
+@SOCKETIO.on('UserInfo')
+def on_worker_hover(data):
+    print(data)
+    userInfo = api.user_worker_info(data['name'])
+    print(userInfo)
+    SOCKETIO.emit('UserInfo', userInfo, broadcast=False, include_self=True)
+   
 
 def add_user_to_statuslist(email, status_list_copy):
     ''' adds username to logged in statusList '''

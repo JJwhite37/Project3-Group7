@@ -1,24 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 
-function Pool(props) {
+export function UserInfo(props) {
   const { socket } = props;
+  
   const [myList, changeList] = useState([]);
+  const [isShown, setIsShown] = useState(false);
+  
+  socket.emit('UserInfo', {name: props.name});
   
   useEffect(() => {
-    socket.on('connection', (data) => {
-      console.log('connetion event received!!');
-      
-      changeList([...data]);
+    socket.on('UserInfo', (data) => {
+      console.log('UserInfo returned ');
       console.log(data);
+      
+      changeList(data);
     });
-  }, []);
+  });
   
   return (
-    <div class="pool">
-      <h2> POOL STATISTICS</h2>
-      <div>Current USD$: {myList[7]}</div>
-      <div>Balance: {myList[6]}</div>
+    <div class="info">
       <div>Current Effective Hashrate: {myList[0]}</div>
       <div>Average Effective Hashrate: {myList[1]}</div>
       <div>Current Reported Hashrate: {myList[2]}</div>
@@ -29,4 +31,4 @@ function Pool(props) {
   );
 }
 
-export default Pool;
+export default UserInfo;
