@@ -12,8 +12,7 @@ function Row(props) {
         <tr>
             <td> {array[1]} </td>
             <td> {array[2]} </td>
-            <td> ${money_earned} </td>
-            <td class="rightr"> {props.array[2]} </td>
+            <td class="rightr">  ${money_earned} </td>
         </tr>
     );
 }

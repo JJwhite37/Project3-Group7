@@ -15,7 +15,7 @@ function DashboardAndLogin(props) {
   console.log('In DashboardAndLogin.js:');
   
   const [isLogin, setLogin] = useState(false);
-  const [ratio, setRatio] = useState(9/5);
+  const [ratio, setRatio] = useState(.06);
   
   function onClickButton() {
     console.log('Button is clicked');
@@ -54,50 +54,60 @@ function DashboardAndLogin(props) {
   
   if (isLogin === true){
     return (
-      <div className = "DashboardAndLogin">
-        <table class="dashboard">
-          
-          <tr>
-            <h1 style={{color: "#23212c", fontsize: "1px", fontweight: "bold", textalign: "center", }}>Econ Miner</h1>
-            <div class="tophead">
-              {' '}
-              <Pool socket={ socket } />{' '}
-            </div>
-          </tr>
-          
-          <tbody>
-            <div>
-              <tr>
+      <div className = "background">
+        <div className = "DashboardAndLogin">
+          <table class="dashboard">
+            
+            <tr>
+              <img src={logo} width="800em" height="160em"/>
+              <div class="tophead">
+                <button class="lookcoolbut" onClick={onClickButton}></button>
+                {' '}
+                <Pool socket={ socket } />{' '}
+              </div>
+            </tr>
+            
+            <tbody>
+              <div>
+                <tr>
+                  
+                  <td class="square">
+                    <div class="currentl">
+                      <Leaderboard socket={socket} ratio={ratio} />
+                    </div>
+                  </td>
+                  
+                  <td class="square">
+                    <div class="currentm">
+                      <CurrentMiners socket={socket} ratio={ratio}/>
+                    </div>
+                    <button class="lookcoolbut" onClick={onRatioButton}>Update Ratio</button>
+                  </td>
+                  
+                  <td class="square">
+                    <Discord />
+                  </td>
+                  
+                </tr>
                 
-                <td class="square">
-                  <Leaderboard socket={socket} ratio={ratio} />
-                  <button class="lookcoolbut" onClick={onClickButton}>test</button>
-                </td>
-                
-                <td class="square">
-                  <CurrentMiners socket={socket} ratio={ratio}/>
-                  <button class="lookcoolbut" onClick={onRatioButton}>Update Ratio</button>
-                </td>
-                
-                <td class="square">
-                  <Discord />
-                </td>
-                
-              </tr>
-              
-              <Logout class= "buttonstyle" socket={socket} />
-            </div>
-          </tbody>
-          
-        </table>
+                <Logout class= "buttonstyle" socket={socket} />
+              </div>
+            </tbody>
+            
+          </table>
+        </div>
       </div>
       );
   }
   else if (isLogin === false){
     return(
-      <div className = "DashboardAndLogin">
-        <div class="login">
-            <Login socket={socket} />
+      <div className = "background">
+        <div className = "DashboardAndLogin">
+          <div class="logmain">
+            <div class="login">
+                <Login socket={socket} />
+            </div>
+          </div>
         </div>
       </div>
     );
