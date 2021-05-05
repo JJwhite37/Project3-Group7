@@ -26,9 +26,9 @@ function CurrentMiners(props) {
                     <table class="scrollboard">
                         <tr class="throw">
                         <div>
-                            <th> User</th>
-                            <th> Shares </th>
-                            <th> Income </th>
+                            <th> - User</th>
+                            <th> - Shares </th>
+                            <th> - Income </th>
                             </div>
                         </tr>
                         

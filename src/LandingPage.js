@@ -26,7 +26,7 @@ function LandingPage() {
         
         <h2>  Why we matter: </h2>
         <p>
-          EcomMiner can be the future of selling computation. Using a dashboard like ours, other businesses will be able to keep track of all the people mining for them. This allows the customers to visually see how much they mine and an easy way to see who is actually a committed miner for that business.Abadio
+          MinerMagic can be the future of selling computation. Using a dashboard like ours, other businesses will be able to keep track of all the people mining for them. This allows the customers to visually see how much they mine and an easy way to see who is actually a committed miner for that business.Abadio
           
         </p>
         <h3>  How we could be used in the future: </h3>
@@ -38,7 +38,7 @@ function LandingPage() {
         
         <h2>  Who is it made by: </h2>
         <p>
-          EcomMiner was created by a collaboration between 4 senior CS students, Joseph Stapleton, Jacob White, Nick Abadio, Lasha Tavberidze.
+          MinerRewards was created by a collaboration between 4 senior CS students, Joseph Stapleton, Jacob White, Nick Abadio, Lasha Tavberidze.
         </p>
         <p> 
           We are very exited to showcase our knowledge and provide an actual working application that could be the future of commercial computation.

@@ -28,9 +28,9 @@ function Leaderboard(props){
                     <table class="scrollboard">
                         <tr class="throw">
                         <div>
-                            <th> Username </th>
-                            <th> User Shares </th>
-                            <th> Money Earned </th>
+                            <th> - Username </th>
+                            <th> - User Shares </th>
+                            <th> - Money Earned </th>
                             </div>
                         </tr>
                         

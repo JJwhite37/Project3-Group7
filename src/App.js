@@ -18,9 +18,11 @@ function App() {
   
   if (onLanding === true){
     return (
-      <div>
-        <LandingPage />
-        <button onClick={onClickButton}> Proceed to Login </button>
+      <div class="background">
+        <div class="tophead">
+          <LandingPage />
+          <button onClick={onClickButton}> Proceed to Login </button>
+        </div>
       </div>
     );
   }
