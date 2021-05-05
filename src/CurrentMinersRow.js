@@ -6,7 +6,7 @@ function CurrentMinersRow(props) {
     const [isShown, setIsShown] = useState(false);
     
     let money_earned = ratio*array[1];
-
+    money_earned = money_earned.toFixed(2)
     
     console.log("isShown: ", isShown);
     
@@ -16,9 +16,11 @@ function CurrentMinersRow(props) {
             onMouseLeave={() => setIsShown(false)}>
             
             <tr>
+            <div>
                 <td> {array[0]} </td>
                 <td> {array[1]} </td>
                 <td> ${money_earned} </td>
+                </div>
             </tr>
             
             {isShown && (

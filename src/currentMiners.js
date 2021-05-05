@@ -1,7 +1,7 @@
 import './currentMiners.css';
 import { useState, useEffect } from 'react';
 import CurrentMinersRow from './CurrentMinersRow';
-
+import './DashboardAndLogin.css';
 function CurrentMiners(props) {
     console.log('In currentMiners:');
   
@@ -24,10 +24,12 @@ function CurrentMiners(props) {
                 <div class="leftpad"></div>
                 <div class="scrollboard">
                     <table class="scrollboard">
-                        <tr>
-                            <th> worker_name </th>
-                            <th> valid_shares </th>
-                            <th> money_earned </th>
+                        <tr class="throw">
+                        <div>
+                            <th> User</th>
+                            <th> Shares </th>
+                            <th> Income </th>
+                            </div>
                         </tr>
                         
                         <tr>
