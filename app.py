@@ -211,7 +211,7 @@ def on_worker_hover(data):
     userInfo = api.user_worker_info(data['name'])
     print(userInfo)
     SOCKETIO.emit('UserInfo', userInfo, broadcast=False, include_self=True)
-   
+
 
 def add_user_to_statuslist(email, status_list_copy):
     ''' adds username to logged in statusList '''
