@@ -15,6 +15,20 @@ https://ecom-miner.herokuapp.com/
 
 1. Run `echo "DANGEROUSLY_DISABLE_HOST_CHECK=true" > .env.development.local` in the project directory
 
+## linting
+
+1. E1101(no-member) - we felt this didn't add to code quality.
+2. C0413(wrong-import-position) - we felt this didn't add to code quality.
+3. W1508(invalid-envvar-default) - we felt this didn't add to code quality.
+4. W0603(global-statement) - we wanted to have global variables
+5. R0903(too-few-public-methods) - we felt this didn't add to code quality.
+6. C0116(missing-function-docstring) - we felt that not every function needed a doc string, only certain ones
+7. C0114(missing-module-docstring) - we felt that this docstring for the module wasn't neccessary
+8. C0301(line-too-long) - we felt as long as the code wasn't too long its fine, we didn't need an arbitrary limit
+9. R1705(no-else-return) - we felt this didn't add to code quality.
+10. W0702(bare-except) - we felt this didn't add to code quality.
+11. C0330(Wrong hanging indentation) - as long as the code wasn't too messy we felt we didn't need a specific format for hanging indentation
+
 ## Setup for Socket.io with Flask and ReactJS
 
 1. Open Cloud9 terminal in `~/environment`. Run `pip install flask-socketio`

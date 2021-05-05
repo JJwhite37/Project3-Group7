@@ -1,7 +1,7 @@
 import os
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, send_from_directory, json, session
+from flask import Flask, send_from_directory, json
 from flask_socketio import SocketIO
 from flask_cors import CORS
 import flexpoolapi
@@ -71,7 +71,7 @@ def on_disconnect():
 #anywhere else and it might not render properly, like leaderboard data
 @SOCKETIO.on('Login')
 def on_login(data):
-    if DB_WORKING == False:
+    if not DB_WORKING:
         login_backup()
     else:
         print(data)
@@ -174,7 +174,7 @@ def on_logout():
 def on_login_database_check(data):
     ''' Do stuff based on if info is already in the database'''
     print(data)
-    if DB_WORKING == False:
+    if not DB_WORKING:
         result = {}
         result['login'] = True
         SOCKETIO.emit('LoginDatabaseCheck', result, broadcast=False, include_self=True)
@@ -194,7 +194,7 @@ def on_login_database_check(data):
         else:
             # see if the email and worker_name are already part of the same row
             in_database = a_leaderboard.check_email_in_database(data['userEmail'], data['userName'], Miner)
-            if in_database == True: # means email and worker_name are correct
+            if in_database: # means email and worker_name are correct
                 # now continue login with no change in the database
                 result['login'] = True
             else:
@@ -208,9 +208,9 @@ def on_login_database_check(data):
 @SOCKETIO.on('UserInfo')
 def on_worker_hover(data):
     print(data)
-    userInfo = api.user_worker_info(data['name'])
-    print(userInfo)
-    SOCKETIO.emit('UserInfo', userInfo, broadcast=False, include_self=True)
+    user_info = api.user_worker_info(data['name'])
+    print(user_info)
+    SOCKETIO.emit('UserInfo', user_info, broadcast=False, include_self=True)
 
 @SOCKETIO.on('ratio')
 def on_ratio():
