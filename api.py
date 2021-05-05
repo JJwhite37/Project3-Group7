@@ -26,10 +26,10 @@ def user_worker_info(user):
     try:
         for worker in POOLOBJECT.workers():
             if worker.worker_name == user:
-                worker_stats = [round((worker.stats().current_effective_hashrate/1000000),2),
-                round((worker.stats().average_effective_hashrate/1000000),2),
-                round((worker.stats().current_reported_hashrate/1000000),2),
-                round((worker.stats().average_reported_hashrate/1000000),2),
+                worker_stats = [round((worker.stats().current_effective_hashrate/1000000), 2),
+                round((worker.stats().average_effective_hashrate/1000000), 2),
+                round((worker.stats().current_reported_hashrate/1000000), 2),
+                round((worker.stats().average_reported_hashrate/1000000), 2),
                 worker.stats().valid_shares,
                 worker.stats().stale_shares,
                 worker.stats().invalid_shares
@@ -38,3 +38,4 @@ def user_worker_info(user):
     except:
         worker_stats = [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         return worker_stats
+    return worker_stats

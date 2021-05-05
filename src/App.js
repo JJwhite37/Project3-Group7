@@ -16,7 +16,7 @@ function App() {
   
   console.log(onLanding);
   
-  if (onLanding == true){
+  if (onLanding === true){
     return (
       <div>
         <LandingPage />
@@ -24,7 +24,7 @@ function App() {
       </div>
     );
   }
-  else if (onLanding == false){
+  else if (onLanding === false){
     return (
       <div>
         <DashboardAndLogin socket={ socket } />
