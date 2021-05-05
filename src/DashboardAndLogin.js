@@ -7,6 +7,7 @@ import Login from './Login.js';
 import Logout from './Logout.js';
 import CurrentMiners from './currentMiners';
 import Leaderboard from './Leaderboard';
+import logo from './econminer.png';
 
 function DashboardAndLogin(props) {
   const { socket } = props;
