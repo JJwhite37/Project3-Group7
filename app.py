@@ -212,15 +212,12 @@ def on_worker_hover(data):
     print(userInfo)
     SOCKETIO.emit('UserInfo', userInfo, broadcast=False, include_self=True)
 
-<<<<<<< HEAD
 @SOCKETIO.on('ratio')
 def on_ratio():   
     print("Get Ratio")
     ratio = get_current_ratio()
     print("Sending Ratio:", ratio)
     SOCKETIO.emit('ratio', ratio, broadcast=True, include_self=True)
-=======
->>>>>>> e626c5fbee865b08eee8d16e4d057d3acab72ffd
 
 def add_user_to_statuslist(email, status_list_copy):
     ''' adds username to logged in statusList '''
