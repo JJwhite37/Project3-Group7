@@ -1,3 +1,4 @@
+
 function Row(props) {
     const { socket, array, ratio } = props;
     
