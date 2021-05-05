@@ -179,7 +179,7 @@ MORE COMPLEX CSS STYLING
   text-shadow: rgb(100, 50, 90);
   color: white;
   max-height: 19em;
-  border-radius: 25px;
+  border-radius: 15px;
   overflow: scroll;
   overflow-x: hidden;
   
@@ -345,4 +345,9 @@ MORE COMPLEX CSS STYLING
     padding: 15px;
     background: rgba(255,255,255,0.5);
     margin: 0 0 10px 0;
+}
+
+.throw{
+  
+  padding-right: 100px;
 }

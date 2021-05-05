@@ -6,7 +6,7 @@ function Row(props) {
     console.log(props);
     
     let money_earned = ratio*array[2];
-
+    money_earned = money_earned.toFixed(2)
     
     return (
         <tr>

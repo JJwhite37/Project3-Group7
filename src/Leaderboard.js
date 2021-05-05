@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Row from './Row';
 import { socket } from './App.js';
+import './DashboardAndLogin.css';
 
 function Leaderboard(props){
     console.log("In Leaderboard:");
@@ -25,10 +26,12 @@ function Leaderboard(props){
                 <div class="leftpad"></div>
                 <div class="scrollboard">
                     <table class="scrollboard">
-                        <tr>
-                            <th> worker_name </th>
-                            <th> valid_shares </th>
-                            <th> money_earned </th>
+                        <tr class="throw">
+                        <div>
+                            <th> Username </th>
+                            <th> User Shares </th>
+                            <th> Money Earned </th>
+                            </div>
                         </tr>
                         
                         <tr>
