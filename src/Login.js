@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useGoogleLogout } from 'react-google-login';
+import logo from './econminer.png';
 
 import Signin from './Signin.js';
 import Signup from './Signup.js';
@@ -56,10 +57,11 @@ function Login(props) {
     return (
       <div>
         <h1>Welcome</h1>
+        <img src={logo} width="400em" height="90em"/>
         <h3>New here? Then sign up, othwise sign in</h3>
         <div className="buttondiv">
-          <button onClick={onSignin} className="button">Sign in</button>
-          <button onClick={onSignup} className="button">Sign up</button>
+          <button onClick={onSignin} className="but">Sign in</button>
+          <button onClick={onSignup} className="but">Sign up</button>
         </div>
       </div>
     );

@@ -245,7 +245,7 @@ def get_current_miners_as_array():
     return current_miners
     
 def get_current_ratio():
-    ratio = 5/8
+    ratio = .065
     return ratio
 
 def get_workers():

@@ -70,7 +70,7 @@ function Signup(props) {
         <h1>Enter a username for your account</h1>
         <input ref={inputRef} type="text" className="textBox"/>
         
-        <button onClick={registerUser} className="button">
+        <button onClick={registerUser} className="but">
           <span className="buttonText">register username</span>
         </button>
       </div>
