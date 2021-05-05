@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useGoogleLogin } from 'react-google-login';
 import { refreshToken } from './refreshToken';
 import './Signup.css';
+import { socket } from './App.js';
 
 function Signup(props) {
   const { socket } = props;
@@ -55,7 +56,7 @@ function Signup(props) {
         </div>
         
         <div>
-          <button onClick={signIn} className="button">
+          <button onClick={signIn} class="but">
             <span className="buttonText">Sign up with Google</span>
           </button>
         </div>

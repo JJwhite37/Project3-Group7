@@ -4,13 +4,21 @@
   background-color:  #3a3637;
   padding-left: 5%;
   border-radius: 25px;
-  min-width: 48em;
-  max-width: 50em;
+  min-width: 30%;
+  max-width: 80em;
   padding: 25px 20px;
   margin: 0 auto;
   color: white;
   
 
+}
+.background {
+  width: 100%;
+  color:black;
+  height:100vh;
+  background-color: #3a3637;
+  
+  
 }
 
 .App-logo {
@@ -24,7 +32,9 @@
   }
 }
 
-
+.rightr{
+  padding-left: 100px;
+}
 
 .App-link {
   color: #61dafb;
@@ -55,30 +65,33 @@
     animation: shake 76s infinite linear;
 }
 
-
+.majordiv {
+  padding-bottom: 40px;
+}
 .dashboard{
   background-color: #fcb43a;
   border-radius: 25px;
   width: 100%;
   vertical-align: middle;
   padding-top: 30px;
-  padding-right: 5px;
+  padding-right: 20px;
   padding-bottom: 30px;
-  padding-left: 5px;
+  padding-left: 20px;
 }
 .dashboard .square {
   width: 100%;
-  padding-top: 15px;
-  padding-right: 10px;
+  padding-right: 15px;
   padding-bottom: 10px;
   padding-left: 10px;
+  padding-top: 10px;
   text-align: center;
   vertical-align: top;
-  margin-top: 35px;
   border-radius: 25px;
   background-color: #992409;
+  margin-right: 10px;
   animation: shake 50s infinite linear;
 }
+
 .square:hover {
   background: #434343;
   letter-spacing: 1px;
@@ -152,7 +165,7 @@ MORE COMPLEX CSS STYLING
     transform: translate(-1px, -1px) rotate(1deg);
   }
   90% {
-    transform: translate(2px, 2px) rotate(0deg);
+    transform: translate(1px, 1px) rotate(0deg);
   }
   100% {
     transform: translate(1px, 1px) rotate(1deg);
@@ -160,15 +173,20 @@ MORE COMPLEX CSS STYLING
 }
 
 .scrollboard {
+  vertical-align: top;
   animation: shake 85s infinite linear;
-  background-color: #23212c;
+  background-color: #992409;
   text-shadow: rgb(100, 50, 90);
   color: white;
   max-height: 19em;
-  border-radius: 3px;
+  border-radius: 25px;
   overflow: scroll;
   overflow-x: hidden;
-  height: 100%;
+  
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+  
+  
 }
 .scrollboard::-webkit-scrollbar {
   width: 1em;
@@ -186,7 +204,14 @@ MORE COMPLEX CSS STYLING
 .shake {
   animation: shake 35s infinite linear;
 }
-
+.currentm{
+  animation: shake 120s infinite linear;
+  
+}
+.currentl{
+  animation: shake 40s infinite linear;
+  
+}
 .buttonstyle {
   border-style: dotted dashed solid double;
   border-radius: 15px;
@@ -230,6 +255,11 @@ MORE COMPLEX CSS STYLING
     background: #7289da;
   }
 }
+.discord {
+  
+  
+  
+}
 
 .leadername {
   color: #434343;
@@ -245,4 +275,74 @@ MORE COMPLEX CSS STYLING
   box-shadow: 6px 25px -15px rgba(0, 0, 0, 0.55);
   transition: all 0.4s ease 0s;
   animation: shake 0.6s infinite;
+}
+.logOutButton {
+  border-style: dotted dashed solid double;
+  border-radius: 15px;
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #3a3637;
+  padding: 10px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  animation: shake 50s infinite linear;
+  
+}
+
+.logmain {
+  margin: 0 auto;
+  padding-bottom: 15px;
+  background-color: #fcb43a;
+  border-radius: 20px;
+  width: 500px;
+  
+}
+.but{
+  border-style: solid;
+    border-width: 0px 0px 3px;
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
+    color: #FFFFFF;	   
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    font-style: normal;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: all 200ms ease-in-out 0s;
+    white-space: nowrap;	
+    font-family: "Gotham Rounded A","Gotham Rounded B",Helvetica,Arial,sans-serif;
+    font-weight: 700;	
+    padding: 9px 25px 9px;
+    font-size: 18px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-right: 500px;
+	
+  
+  
+}
+.but:hover {
+    background: none repeat scroll 0 0 #EB4848 !important;
+    border-color: #E83131 !important;    
+}
+.txtbox{
+    border: 5px solid white; 
+    -webkit-box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    -moz-box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    padding: 15px;
+    background: rgba(255,255,255,0.5);
+    margin: 0 0 10px 0;
 }
