@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { UserInfo } from './Userinfo';
 
 function CurrentMinersRow(props) {
-    const { socket} = props;
+    const { socket, array, ratio } = props;
     const [isShown, setIsShown] = useState(false);
+    
+    let money_earned = ratio*array[1];
 
+    
     console.log("isShown: ", isShown);
     
     return (
@@ -13,12 +16,13 @@ function CurrentMinersRow(props) {
             onMouseLeave={() => setIsShown(false)}>
             
             <tr>
-                <td> {props.array[0]} </td>
-                <td> {props.array[1]} </td>
+                <td> {array[0]} </td>
+                <td> {array[1]} </td>
+                <td> ${money_earned} </td>
             </tr>
             
             {isShown && (
-                <UserInfo name={props.array[0]} socket={socket}/>
+                <UserInfo name={array[0]} socket={socket}/>
                 )
             }
         </div>
