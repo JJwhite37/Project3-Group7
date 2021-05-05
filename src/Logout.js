@@ -1,14 +1,13 @@
 import React from 'react';
 import { useGoogleLogout } from 'react-google-login';
+//import io from 'socket.io-client';
+import { socket } from './App.js';
 
-function Logout(props) {
-  const { socket } = props;
-  
+function Logout() {
   const clientId = process.env.REACT_APP_LOGINID;
-  
   const onLogoutSuccess = (userInfo) => {
-    socket.emit('Logout');
     console.log('Logged out');
+    socket.emit('Logout');
   };
 
   const onFailure = () => {

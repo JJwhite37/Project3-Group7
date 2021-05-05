@@ -41,7 +41,7 @@ function Signin() {
         <h1>Sign in with google</h1>
       </div>
       <div>
-        <button onClick={signIn} className="button">
+        <button onClick={signIn} className="but">
           <span className="buttonText">Sign in with Google</span>
         </button>
       </div>

@@ -1,29 +1,14 @@
-import { useState } from 'react';
-import { UserInfo } from './Userinfo';
+import { useState, useEffect } from 'react';
 
 function CurrentMinersRow(props) {
-    const { socket} = props;
-    const [isShown, setIsShown] = useState(false);
-
-    console.log("isShown: ", isShown);
+    console.log("Props of CurrentMinersRow")
+    console.log(props)
     
     return (
-        <div
-            onMouseEnter={() => setIsShown(true)}
-            onMouseLeave={() => setIsShown(false)}>
-            
-            <tr>
-                <td> {props.array[0]} </td>
-                <td> {props.array[1]} </td>
-            </tr>
-            
-            {isShown && (
-                <UserInfo name={props.array[0]} socket={socket}/>
-                )
-            }
-        </div>
-        
-        
+        <tr>
+            <td> {props.array[0]} </td>
+            <td class="rightr"> {props.array[1]} </td>
+        </tr>
     );
 }
 
