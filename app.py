@@ -213,7 +213,7 @@ def on_worker_hover(data):
     SOCKETIO.emit('UserInfo', userInfo, broadcast=False, include_self=True)
 
 @SOCKETIO.on('ratio')
-def on_ratio():   
+def on_ratio():
     print("Get Ratio")
     ratio = get_current_ratio()
     print("Sending Ratio:", ratio)
@@ -243,7 +243,7 @@ def get_current_miners_as_array():
             add_miner_to_current_miners([worker[0], worker[1]], current_miners)
     print(current_miners)
     return current_miners
-    
+
 def get_current_ratio():
     ratio = .065
     return ratio
